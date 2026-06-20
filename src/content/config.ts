@@ -1,59 +1,41 @@
 import { defineCollection, z } from 'astro:content';
 
-const staffCollection = defineCollection({
-  type: 'content',
-  schema: z.object({
-    name: z.string(),
-    title: z.string(), // e.g., "Senior Pastor", "Deaconess"
-    image: z.string().startsWith('/uploads/staff/'),
-    email: z.string().email().optional(),
-    phone: z.string().optional(),
-    bio: z.string().optional(), // Short bio in frontmatter
-    order: z.number().default(0),
-    draft: z.boolean().default(false),
-  }),
-});
-
-const eventsCollection = defineCollection({
+const obrasCollection = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
-    date: z.date(), // Event start date
-    endDate: z.date().optional(), // Event end date
-    time: z.string().optional(), // e.g., "09:00 AM - 11:00 AM"
-    location: z.string(),
-    image: z.string().startsWith('/uploads/events/'),
-    summary: z.string(),
+    year: z.number(), 
+    image: z.string().startsWith('/uploads/obras/'),
     tags: z.array(z.string()).optional(),
-    registrationLink: z.string().url().optional(),
-    registrationRequired: z.boolean().default(false),
     draft: z.boolean().default(false),
+    seoTitle: z.string().optional(),
+    seoDescription: z.string().optional(),
   }),
 });
 
-const sermonsCollection = defineCollection({
+const publicacionesCollection = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
     slug: z.string().optional(), // Auto-generated if not provided
     date: z.date(),
-    speaker: z.string(),
+    autor: z.string(),
     series: z.string().optional(),
-    scripture: z.string().optional(),
-    audioUrl: z.string().url().optional(),
+    categoria: z.string().optional(),
+    formato: z.string().optional(),
     videoUrl: z.string().url().optional(),
-    image: z.string().startsWith('/uploads/sermons/').optional(), // Thumbnail
+    image: z.string().startsWith('/uploads/publicaciones/').optional(), // Thumbnail
     summary: z.string().optional(),
     tags: z.array(z.string()).optional(),
     draft: z.boolean().default(false),
   }),
 });
 
-const ministriesCollection = defineCollection({
+const proyectosCollection = defineCollection({
   type: 'content',
   schema: z.object({
     name: z.string(),
-    logo: z.string().startsWith('/uploads/ministries/').optional(),
+    logo: z.string().startsWith('/uploads/proyectos/').optional(),
     summary: z.string(),
     coordinator: z.string().optional(),
     contact: z.string().optional(), // Email or text
@@ -88,10 +70,9 @@ const siteInfoCollection = defineCollection({
 });
 
 export const collections = {
-  staff: staffCollection,
-  events: eventsCollection,
-  sermons: sermonsCollection,
-  ministries: ministriesCollection,
+  obras: obrasCollection,
+  publicaciones: publicacionesCollection,
+  proyectos: proyectosCollection,
   blog: blogCollection,
   siteInfo: siteInfoCollection,
 };

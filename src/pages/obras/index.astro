@@ -1,0 +1,265 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Card from "../../components/UI/Card.astro";
+import Button from "../../components/UI/Button.astro";
+import { getCollection } from "astro:content";
+
+//allObras
+const allObras = await getCollection("obras", ({ data }) => {
+  return import.meta.env.PROD ? !data.draft : true;
+});
+
+const obrasOrdenadas = allObras.sort(
+  (a, b) => Number(b.data.year) - Number(a.data.year)
+);
+
+const obrasLibrodeArtista = allObras.filter((obra) =>
+  obra.data.tags?.includes("libro-de-artista")
+);
+
+const obrasFotografia = allObras.filter((obra) =>
+  obra.data.tags?.includes("fotografia")
+);
+
+const obrasArteobjeto = allObras.filter((obra) =>
+  obra.data.tags?.includes("arte-objeto")
+);
+
+const obrasVideodigital = allObras.filter((obra) =>
+  obra.data.tags?.includes("video digital")
+);
+---
+
+<BaseLayout
+  title="Obra artística | Isaac Ramos"
+  description="Fotografía contemporánea, arte objeto y publicaciones independientes de Isaac Ramos."
+>
+  
+
+<section class="py-[120px] bg-white">
+  <!--Título-->
+  <div class="container grid lg:grid-cols-2 gap-20 items-center">
+    <!-- Encabezado -->
+    <div class="max-w-4xl py-[92px]">
+      <h1 class="font-serif text-5xl md:text-7xl text-texto-950 mb-8">
+        Obra
+      </h1>
+
+      <div class="w-24 h-px bg-texto-950 mb-8"></div>
+
+      <p class="max-w-2xl text-lg md:text-xl leading-relaxed text-texto-600">
+        Fotografías, arte objeto y publicaciones que exploran
+        el desapego y las relaciones afectivas que construimos con los
+        objetos cotidianos.
+      </p>
+    </div>
+
+    <div>
+        <img
+          src="/uploads/obra-disponible-isaac-ramos.webp"
+          alt="Obra disponible de Isaac Ramos"
+          class="w-full h-[450px] object-cover"
+        />
+    </div>
+  </div>  
+</section>
+
+<!-- Obras -->
+<section class="py-[24px] bg-white ">
+
+  <!-- Libro de artista -->
+  <section class="py-[60px] group">
+    <div class="container gap-20"> 
+      <article>
+      <!-- Año -->
+        <p class="text-sm uppercase tracking-[0.25em] text-texto-500 mb-4">
+          2025-2026
+        </p>
+      <!-- Título -->
+        <h2 class="font-serif text-3xl md:text-5xl text-texto-950 mb-10 transition-colors duration-300 group-hover:text-naranja-100">
+         <a href="/obras/libro-de-artista">Libro de artista</a>
+        </h2>
+      <!-- Card --> 
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {obrasLibrodeArtista.map((obra) => (
+            <Card
+              title={obra.data.title}
+              image={{
+                src: obra.data.image,
+                alt: obra.data.title
+              }}
+              href={`/obras/${obra.slug}`}
+            >
+              <div class="mb-3 flex items-center text-gray-600">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <span>{obra.data.year}</span>
+              </div>
+                          <p class="text-primary-600 font-medium group-hover:underline group-hover:text-primary-700">
+                Ver más →
+              </p>
+            </Card>
+          ))}
+        </div>
+       </article>
+    </div>
+  </section>
+
+  <!-- Arteobjeto -->
+ <section class="py-[60px] group">
+    <div class="container gap-20"> 
+      <article>
+      <!-- Año -->
+        <p class="text-sm uppercase tracking-[0.25em] text-texto-500 mb-4">
+          2025-2026
+        </p>
+      <!-- Título -->
+        <h2 class="font-serif text-3xl md:text-5xl text-texto-950 mb-10 transition-colors duration-300 group-hover:text-naranja-100">
+          <a href="/obras/arte-objeto">Arte objeto</a>
+        </h2>
+      <!-- Card --> 
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {obrasArteobjeto.map((obra) => (
+          <Card
+            title={obra.data.title}
+            image={{
+              src: obra.data.image,
+              alt: obra.data.title
+            }}
+            href={`/obras/${obra.slug}`}
+          >
+            <div class="mb-3 flex items-center text-gray-600">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <span>{obra.data.year}</span>
+            </div>
+                        <p class="text-primary-600 font-medium group-hover:underline group-hover:text-primary-700">
+              Ver más →
+            </p>
+          </Card>
+        ))}
+      </article>
+    </div>
+  </section>
+  
+  <section class="py-[60px] group">
+    <div class="container gap-20"> 
+      <!-- Fotografía -->
+      <article>
+      <!-- Año -->
+        <p class="text-sm uppercase tracking-[0.25em] text-texto-500 mb-4">
+          2024-2026
+        </p>
+      <!-- Título -->
+        <h2 class="font-serif text-3xl md:text-5xl text-texto-950 mb-10 transition-colors duration-300 group-hover:text-naranja-100">
+          <a href="/obras/fotografia">Fotografía</a>
+        </h2>
+      <!-- Card --> 
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {obrasFotografia.map((obra) => (
+          <Card
+            title={obra.data.title}
+            image={{
+              src: obra.data.image,
+              alt: obra.data.title
+            }}
+            href={`/obras/${obra.slug}`}
+          >
+            <div class="mb-3 flex items-center text-gray-600">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <span>{obra.data.year}</span>
+            </div>
+                        <p class="text-primary-600 font-medium group-hover:underline group-hover:text-primary-700">
+              Ver más →
+            </p>
+          </Card>
+        ))}
+      </article>
+    </div>
+  </section>
+  
+  <section class="py-[60px] group">
+    <div class="container gap-20">    
+      <!-- Videoarte -->
+      <article>
+      <!-- Año -->
+        <p class="text-sm uppercase tracking-[0.25em] text-texto-500 mb-4">
+          2025-2026
+        </p>
+      <!-- Título -->
+        <h2 class="font-serif text-3xl md:text-5xl text-texto-950 mb-10 transition-colors duration-300 group-hover:text-naranja-100">
+          <a href="/obras/video-digital"> Video digital </a>
+        </h2>
+      <!-- Card --> 
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {obrasVideodigital.map((obra) => (
+          <Card
+            title={obra.data.title}
+            image={{
+              src: obra.data.image,
+              alt: obra.data.title
+            }}
+            href={`/obras/${obra.slug}`}
+          >
+            <div class="mb-3 flex items-center text-gray-600">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <span>{obra.data.year}</span>
+            </div>
+                        <p class="text-primary-600 font-medium group-hover:underline group-hover:text-primary-700">
+              Ver más →
+            </p>
+          </Card>
+        ))}
+      </article>
+    </div>
+  </section>
+</section>
+
+<section class="py-[60px] group">
+  <div class="container gap-20"> 
+    <div class="grid lg:grid-cols-2 gap-20 items-center">
+    <!-- Texto -->
+      <div>
+        <p class="text-sm uppercase tracking-[0.25em] text-texto-500 mb-4">
+          Obra disponible
+        </p>
+
+        <h2 class="font-serif text-5xl md:text-6xl text-texto-950 mb-8">
+          Adquisición de obra
+        </h2>
+
+        <div class="w-24 h-px bg-texto-950 mb-8"></div>
+
+        <p class="text-lg leading-relaxed text-texto-600 mb-10">
+          Selección de piezas fotográficas, arte objeto y publicaciones
+          disponibles para adquisición.
+        </p>
+
+        <a
+          href="/obra-disponible"
+          class="inline-block border border-texto-950 px-8 py-4 hover:bg-texto-950 hover:text-white transition"
+        >
+          Explorar colección →
+        </a>
+      </div>
+      <!-- Imagen -->
+      <div>
+
+        <img
+          src="/uploads/obra-disponible-isaac-ramos.webp"
+          alt="Obra disponible de Isaac Ramos"
+          class="w-full h-[650px] object-cover"
+        />
+
+      </div>
+    </div>
+  </div>
+</section>
+
+</BaseLayout>

@@ -1,0 +1,157 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHeader from "../../components/Sections/PageHeader.astro";
+import { getCollection } from "astro:content";
+
+// Fetch all proyectos
+const all = await getCollection("proyectos", ({ data }) =>
+  import.meta.env.PROD ? !data.draft : true
+);
+// Sort by order or name
+const proyectos = all.sort((a, b) =>
+  (a.data.order ?? 0) - (b.data.order ?? 0) ||
+  a.data.name.localeCompare(b.data.name)
+);
+
+const proyectosArteobjeto = all.filter((proyectos) =>
+  proyectos.data.tags?.includes("arte-objeto")
+);
+
+const proyectosSeriesFotograficas = all.filter((proyectos) =>
+  proyectos.data.tags?.includes("arte-objeto")
+);
+
+const proyectosVideodigital = all.filter((proyectos) =>
+  proyectos.data.tags?.includes("video digital")
+);
+---
+
+<BaseLayout 
+  title="Proyectos | Isaac Ramos 2026"  
+  description="Discover our proyectos.">
+
+  <section class="py-[120px] bg-white">
+  <!--Título-->
+  <div class="container grid lg:grid-cols-2 gap-20 items-center">
+    <!-- Encabezado -->
+    <div class="max-w-4xl py-[92px]">
+      <h1 class="font-serif text-5xl md:text-7xl text-texto-950 mb-8">
+        Proyectos
+      </h1>
+
+      <div class="w-24 h-px bg-texto-950 mb-8"></div>
+
+      <p class="max-w-2xl text-lg md:text-xl leading-relaxed text-texto-600">
+        Series fotográficas, arte objeto y publicaciones que exploran
+        el desapego y las relaciones afectivas que construimos con los
+        objetos cotidianos.
+      </p>
+    </div>
+
+    <div>
+        <img
+          src="/uploads/proyectos-isaac-ramos.webp"
+          alt="Proyectos de Isaac Ramos"
+          class="w-full h-[450px] object-cover"
+        />
+    </div>
+  </div>  
+</section>
+
+<section class="py-[60px] group">
+  <div class="container gap-20"> 
+    <!-- Series fotográficas -->
+    <article>
+      <!-- Año -->
+      <p class="text-sm uppercase tracking-[0.25em] text-texto-500 mb-4">
+          2024-2026
+      </p>
+      <!-- Título -->
+      <h2 class="font-serif text-3xl md:text-5xl text-texto-950 mb-10 transition-colors duration-300 group-hover:text-naranja-100">
+        <a href="/proyectos/series-fotograficas">Series fotográficas</a>
+      </h2>
+      <!-- Card --> 
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {proyectos.map(proyectos => (
+        <a
+          href={`/proyectos/${proyectos.slug}`}
+          class="
+          g-white rounded-lg shadow 
+          flex flex-col overflow-hidden 
+          hover:shadow-lg transition
+          min-h-[370px]
+          "
+        >
+            <!-- gambar fixed height 200px -->
+            {proyectos.data.logo && (
+              <div class="w-full h-[200px] overflow-hidden">
+                <img
+                  src={proyectos.data.logo}
+                  alt={proyectos.data.name}
+                  class="w-full h-full object-cover"
+                />
+              </div>
+            )}
+
+            <div class="p-4 flex flex-col flex-1 justify-between">
+              <div>
+                <h3 class="text-xl font-semibold mb-2">{proyectos.data.name}</h3>
+                <p class="text-gray-700">{proyectos.data.summary}</p>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </article>
+  </div>
+</section> 
+
+<section class="py-[60px] group">
+  <div class="container gap-20"> 
+    <!-- Arte objeto -->
+    <article>
+      <!-- Año -->
+      <p class="text-sm uppercase tracking-[0.25em] text-texto-500 mb-4">
+          2025-2026
+      </p>
+      <!-- Título -->
+      <h2 class="font-serif text-3xl md:text-5xl text-texto-950 mb-10 transition-colors duration-300 group-hover:text-naranja-100">
+        <a href="/proyectos/series-fotograficas">Arte objeto</a>
+      </h2>
+      <!-- Card --> 
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {proyectos.map(proyectos => (
+        <a
+          href={`/proyectos/${proyectos.slug}`}
+          class="
+          g-white rounded-lg shadow 
+          flex flex-col overflow-hidden 
+          hover:shadow-lg transition
+          min-h-[370px]
+          "
+        >
+            <!-- gambar fixed height 200px -->
+            {proyectos.data.logo && (
+              <div class="w-full h-[200px] overflow-hidden">
+                <img
+                  src={proyectos.data.logo}
+                  alt={proyectos.data.name}
+                  class="w-full h-full object-cover"
+                />
+              </div>
+            )}
+
+            <div class="p-4 flex flex-col flex-1 justify-between">
+              <div>
+                <h3 class="text-xl font-semibold mb-2">{proyectos.data.name}</h3>
+                <p class="text-gray-700">{proyectos.data.summary}</p>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </article>
+  </div>
+</section> 
+
+</BaseLayout>

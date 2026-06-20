@@ -6,14 +6,14 @@ export interface Props {
     alt: string;
   };
   dataSeries?: string;
-  dataSpeaker?: string;
+  dataAutor?: string;
   dataDate?: string;
   href?: string;
   className?: string;
   imageLayout?: 'top' | 'background';
 }
 
-const { title, image, href, className = "", imageLayout = 'top', dataSeries, dataSpeaker, dataDate} = Astro.props;
+const { title, image, href, className = "", imageLayout = 'top', dataSeries, dataAutor, dataDate} = Astro.props;
 const Element = href ? "a" : "div";
 ---
 
@@ -21,7 +21,7 @@ const Element = href ? "a" : "div";
   href={href}
   aria-label={href ? title : undefined}
   data-series={dataSeries}
-  data-speaker={dataSpeaker}
+  data-speaker={dataAutor}
   data-date={dataDate}
   class:list={[
     'card group overflow-hidden',
@@ -38,7 +38,7 @@ const Element = href ? "a" : "div";
         src={image.src}
         alt={image.alt}
         class:list={[
-          "w-full object-cover object-center transition-transform duration-300 group-hover:scale-105",
+          "w-full object-cover object-center transition-transform duration-300 hover:scale-105",
           { 'h-full': imageLayout === 'background', 'h-auto': imageLayout === 'top' }
         ]}
       />

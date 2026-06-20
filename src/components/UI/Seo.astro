@@ -14,8 +14,8 @@ const {
   title,
   description,
   image = {
-    url: "/uploads/church-default.webp",
-    alt: "Church Name",
+    url: "/uploads/social-share.webp",
+    alt: "Isaac Ramos | Artista visual"
   },
   type = "website",
   canonicalUrl,
@@ -28,14 +28,14 @@ const canonicalURL = canonicalUrl || new URL(Astro.url.pathname, Astro.site);
 const churchInfo = {
   name: "Church Name",
   address: {
-    streetAddress: "123 Main Street",
-    addressLocality: "Anytown",
-    addressRegion: "ST",
-    postalCode: "12345",
-    addressCountry: "US",
+    streetAddress: "Checar",
+    addressLocality: "Checar",
+    addressRegion: "Torreón, Coahuila",
+    postalCode: "27000",
+    addressCountry: "México",
   },
-  telephone: "+1-555-123-4567",
-  email: "info@churchname.org",
+  telephone: "+52 871 266 5096",
+  email: "contacto@isidm.com",
   url: Astro.site?.toString() || "https://example.com",
 };
 ---
@@ -65,8 +65,8 @@ const churchInfo = {
 <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Church",
-    "name": "${churchInfo.name}",
+    "@type": "Person",
+    "name": "Isaac Ramos",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "${churchInfo.address.streetAddress}",
@@ -75,8 +75,10 @@ const churchInfo = {
       "postalCode": "${churchInfo.address.postalCode}",
       "addressCountry": "${churchInfo.address.addressCountry}"
     },
+    "job title": "Artista visual"
     "telephone": "${churchInfo.telephone}",
     "email": "${churchInfo.email}",
+    "description": "Fotógrafo, artista visual y editor independiente."
     "url": "${churchInfo.url}"
   }
 </script>

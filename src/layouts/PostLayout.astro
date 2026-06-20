@@ -2,7 +2,6 @@
 export const layout = "../layouts/BaseLayout.astro";
 
 import PageHeader from "../components/Sections/PageHeader.astro";
-import { formatDate } from "../utils/dateUtils";
 
 export interface Props {
   title: string;
@@ -12,9 +11,9 @@ export interface Props {
     alt: string;
   };
   date?: Date;
-  author?: string;
+  autor?: string;
   tags?: string[];
-  type?: "sermon" | "event" | "blog" | "ministry";
+  type?: "publicaciones" | "obras" | "blog" | "proyectos";
 }
 
 const {
@@ -22,7 +21,7 @@ const {
   description,
   image,
   date,
-  author,
+  autor,
   tags = [],
   type = "blog",
 } = Astro.props;
@@ -30,15 +29,14 @@ const {
 const seoType = "article";
 
 let pageTitle = title;
-if (type === "sermon") {
-  pageTitle = `Sermon: ${title}`;
-} else if (type === "event") {
-  pageTitle = `Event: ${title}`;
-} else if (type === "ministry") {
+if (type === "publicaciones") {
+  pageTitle = `publicaciones: ${title}`;
+} else if (type === "obras") {
+  pageTitle = `obras: ${title}`;
+} else if (type === "proyectos") {
   pageTitle = `${title} Ministry`;
 }
 
-const formattedDate = date ? formatDate(date) : null;
 ---
 
 <!-- SEO props diteruskan oleh BaseLayout -->
@@ -54,33 +52,24 @@ const formattedDate = date ? formatDate(date) : null;
           src={image.url}
           alt={image.alt}
           class="object-cover w-full h-64 md:h-96"
-          widths={[320, 640, 1024]}
-          format="webp"
+
           loading="lazy" />
       </div>
     )}
 
     <div class="mb-8">
-      {(date || author) && (
+      {(date || autor) && (
         <div class="flex flex-wrap items-center mb-4 text-sm text-gray-600">
-          {formattedDate && (
+          {date && (
             <span class="mr-4 flex items-center">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
-              {formattedDate}
+              {date}
             </span>
           )}
-          {author && (
-            <span class="flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
-              {author}
-            </span>
-          )}
+          
         </div>
       )}
 

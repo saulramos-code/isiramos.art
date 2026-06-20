@@ -4,52 +4,69 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: {
-          50: '#eff6ff',
-          100: '#dbeafe',
-          200: '#bfdbfe',
-          300: '#93c5fd',
-          400: '#60a5fa',
-          500: '#3b82f6',
-          600: '#2563eb',
-          700: '#1d4ed8',
-          800: '#1e40af',
-          900: '#1e3a8a',
-          950: '#172554',
+
+         brand: {
+          DEFAULT: "#171614",
         },
-        secondary: {
-          50: '#faf5ff',
-          100: '#f3e8ff',
-          200: '#e9d5ff',
-          300: '#d8b4fe',
-          400: '#c084fc',
-          500: '#a855f7',
-          600: '#9333ea',
-          700: '#7c3aed',
-          800: '#6b21a8',
-          900: '#581c87',
-          950: '#3b0764',
+        texto: {
+          50: '#f8f8f8',
+          100: '#efefef',
+          200: '#d9d9d9',
+          300: '#bfbfbf',
+          400: '#8f8f8f',
+          500: '#666666',
+          600: '#4a4a4a',
+          700: '#333333',
+          800: '#1f1f1f',
+          900: '#111111',
+          950: '#171614'
         },
-        accent: {
-          50: '#fff7ed',
-          100: '#ffedd5',
-          200: '#fed7aa',
-          300: '#fdba74',
-          400: '#fb923c',
-          500: '#f97316',
-          600: '#ea580c',
-          700: '#c2410c',
-          800: '#9a3412',
-          900: '#7c2d12',
-          950: '#431407',
+
+        naranja: {
+          100: '#F28C2C',
         },
+
+        naranjatinte: {
+           50: "#FDF2E7",
+           100: "#FBDABC",
+           200: "#F8C391",
+           300: "#F5AB66",
+           400: "#F28C2C",
+           500: "#F07C0F",
+           600: "#C5650D",
+           700: "#994F0A",
+           800: "#6E3907",
+           900: "#432304",
+           950: "#180C02"
+        },
+
+        coral: {
+          100: '#E39A8B',
+        },
+
+        coraltinte: {
+         50: "#FAEDEA",
+         100: "#F1CDC6",
+         200: "#E8ACA1",
+         300: "#E39A8B",
+         400: "#D66C57",
+         500: "#CD4C32",
+         600: "#A83E29",
+         700: "#833020",
+         800: "#5E2317",
+         900: "#39150E",
+         950: "#150805"
+}
+
       },
+
       fontFamily: {
-        serif: ['"Playfair Display"', 'Georgia', 'serif'],
-        sans: ['"Source Sans Pro"', 'system-ui', 'sans-serif'],
+        serif: ['Cormorant Garamond', 'EB Garamond', 'serif'],
+        sans: ['Inter', '"Source Sans Pro"', 'sans-serif'],
       },
     },
   },
+
   plugins: [
     require('@tailwindcss/typography'),
   ],
