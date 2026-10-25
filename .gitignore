@@ -24,4 +24,7 @@ pnpm-debug.log*
 .idea/
 
 # nodejs
-package-lock.json
+# (Aquí estaba package-lock.json, bórralo)
+
+build.log
+build_output.log

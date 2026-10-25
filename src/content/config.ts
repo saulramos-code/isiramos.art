@@ -139,18 +139,9 @@ const blogCollection = defineCollection({
   }),
 });
 
-const siteInfoCollection = defineCollection({
-  type: "data",
-
-  schema: z.object({
-    title: z.string(),
-  }),
-});
-
 export const collections = {
   obras: obrasCollection,
   publicaciones: publicacionesCollection,
   proyectos: proyectosCollection,
   blog: blogCollection,
-  siteInfo: siteInfoCollection,
 };
