@@ -1,0 +1,252 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHeader from "../../components/Sections/PageHeader.astro";
+import OptimizedImage from "../../components/UI/OptimizedImage.astro";
+import { getCollection } from "astro:content";
+
+const todasLasObras = await getCollection("obras", ({ data }) => {
+  return !data.draft;
+});
+
+/*
+ * Filtramos las obras relacionadas con piezas y objetos.
+ */
+const piezas = todasLasObras
+  .filter((obra) => {
+    const tags = obra.data.tags?.map((tag) =>
+      tag.toLowerCase().trim()
+    ) || [];
+
+    return tags.some((tag) =>
+      [
+        "objeto",
+        "objetos",
+        "arte-objeto",
+        "arte objeto",
+        "piezas",
+        "pieza"
+      ].includes(tag)
+    );
+  })
+  .sort((a, b) => b.data.year - a.data.year);
+---
+
+<BaseLayout
+  title="Piezas y Objetos | Isaac Ramos"
+  description="Piezas, objetos y experimentaciones materiales de Isaac Ramos."
+>
+
+  <!-- Encabezado -->
+  <PageHeader
+    title="Piezas y Objetos"
+  />
+
+  <!-- Introducción -->
+  <section class="pt-8 pb-20">
+    <div class="container">
+
+      <div class="max-w-3xl">
+        <p class="text-xl md:text-2xl leading-relaxed text-gray-700">
+          Objetos, materiales y piezas que exploran las relaciones entre
+          memoria, territorio y vida cotidiana.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- Imagen introductoria -->
+  <section class="pb-24">
+    <div class="container">
+
+      <div class="max-w-6xl mx-auto">
+
+        <div class="overflow-hidden rounded-md group">
+
+          <OptimizedImage
+            src="/uploads/piezas-y-objetos-isaac-ramos.webp"
+            alt="Piezas y objetos de Isaac Ramos"
+            class="w-full h-[450px] md:h-[650px] object-cover
+                   transition duration-700
+                   group-hover:scale-[1.02]
+                   group-hover:brightness-95"
+                 loading="eager"
+                 fetchpriority="high"
+                 decoding="async"
+                 widths={[480, 800, 1200, 1600]}
+                 sizes="(max-width: 768px) 100vw, 1200px"
+          />
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- Archivo -->
+  <section class="pb-32">
+    <div class="container">
+
+      <!-- Título del archivo -->
+      <div class="flex items-end justify-between mb-12">
+
+        <div>
+          <p class="text-sm uppercase tracking-[0.2em] text-gray-500 mb-3">
+            Archivo
+          </p>
+
+          <h2 class="heading-h2">
+            Piezas y objetos
+          </h2>
+        </div>
+
+        <p class="hidden md:block text-sm text-gray-500">
+          {piezas.length} {piezas.length === 1 ? "pieza" : "piezas"}
+        </p>
+
+      </div>
+
+
+      {piezas.length > 0 ? (
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-20">
+
+          {piezas.map((pieza) => (
+
+            <a
+              href={`/obras/${pieza.slug}`}
+              class="group block"
+            >
+
+              <!-- Imagen -->
+              <div class="overflow-hidden rounded-md bg-gray-100">
+
+                <OptimizedImage
+                  src={pieza.data.image}
+                  alt={pieza.data.title}
+                  loading="lazy"
+                  decoding="async"
+                  widths={[320, 640, 960]}
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  class="w-full aspect-[4/3] object-cover
+                         transition duration-700
+                         group-hover:scale-[1.02]
+                         group-hover:brightness-95"
+                />
+
+              </div>
+
+
+              <!-- Información -->
+              <div class="pt-5">
+
+                <div class="flex items-center justify-between mb-3">
+
+                  <span class="text-sm text-gray-500">
+                    {pieza.data.year}
+                  </span>
+
+                  <span class="text-sm text-gray-400
+                               opacity-0
+                               group-hover:opacity-100
+                               transition-opacity duration-300">
+                    Ver pieza →
+                  </span>
+
+                </div>
+
+
+                <h3 class="obra-title text-gray-900 group-hover:text-primary-700 transition-colors duration-300">
+                  {pieza.data.title}
+                </h3>
+
+
+                {pieza.data.tags && pieza.data.tags.length > 0 && (
+
+                  <div class="flex flex-wrap gap-2 mt-4">
+
+                    {pieza.data.tags.map((tag) => (
+
+                      <span
+                        class="text-xs uppercase tracking-wider
+                               text-gray-500"
+                      >
+                        {tag}
+                      </span>
+
+                    ))}
+
+                  </div>
+
+                )}
+
+              </div>
+
+            </a>
+
+          ))}
+
+        </div>
+
+      ) : (
+
+        <!-- Estado vacío -->
+        <div class="py-20 text-center border-t border-gray-200">
+
+          <p class="text-gray-500">
+            Próximamente se incorporarán piezas a este archivo.
+          </p>
+
+        </div>
+
+      )}
+
+    </div>
+  </section>
+
+
+  <!-- Cierre -->
+  <section class="py-24 border-t border-gray-200">
+
+    <div class="container">
+
+      <div class="max-w-3xl">
+
+        <p class="text-sm uppercase tracking-[0.2em] text-gray-500 mb-4">
+          También puedes explorar
+        </p>
+
+        <div class="flex flex-wrap gap-4">
+
+          <a
+            href="/obras/fotografia-contemporanea"
+            class="inline-flex items-center px-5 py-3
+                   border border-gray-900 rounded-md
+                   hover:bg-gray-900 hover:text-white
+                   transition-colors duration-300"
+          >
+            Fotografía contemporánea →
+          </a>
+
+          <a
+            href="/obras"
+            class="inline-flex items-center px-5 py-3
+                   border border-gray-300 rounded-md
+                   hover:border-gray-900
+                   transition-colors duration-300"
+          >
+            Ver toda la obra →
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</BaseLayout>

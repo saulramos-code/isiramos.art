@@ -1,6 +1,6 @@
-# Contributing to maucariapacom-church-starter
+# Contributing to isiramos
 
-First off, thank you for considering contributing to the MauCariApa.com Church Starter template! We welcome contributions from the community to make this template even better for church websites PDPN.
+First off, thank you for considering contributing to isiramos! We welcome contributions from the community to make this portfolio site better.
 
 Whether you're fixing a bug, improving documentation, adding a new feature, or suggesting an enhancement, your help is appreciated.
 
@@ -22,15 +22,15 @@ Whether you're fixing a bug, improving documentation, adding a new feature, or s
 
 ## Code of Conduct
 
-This project and everyone participating in it is governed by our [Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to info@maucariapa.com.
+This project and everyone participating in it is governed by our [Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
 
 ## How Can I Contribute?
 
 ### Reporting Bugs
 
-If you find a bug, please ensure the bug was not already reported by searching on GitHub under [Issues](https://github.com/MauCariApa-com/maucariapacom-church-starter/issues).
+If you find a bug, please ensure the bug was not already reported by searching on GitHub under [Issues](https://github.com/isiramos/isiramos/issues).
 
-If you're unable to find an open issue addressing the problem, [open a new one](https://github.com/MauCariApa-com/maucariapacom-church-starter/issues/new). Be sure to include a **title and clear description**, as much relevant information as possible, and a **code sample or an executable test case** demonstrating the expected behavior that is not occurring.
+If you're unable to find an open issue addressing the problem, [open a new one](https://github.com/isiramos/isiramos/issues/new). Be sure to include a **title and clear description**, as much relevant information as possible, and a **code sample or an executable test case** demonstrating the expected behavior that is not occurring.
 
 Provide information about your environment:
 - Astro version
@@ -40,9 +40,9 @@ Provide information about your environment:
 
 ### Suggesting Enhancements or New Features
 
-We love to hear new ideas to improve this template!
-1. Search [Issues](https://github.com/MauCariApa-com/maucariapacom-church-starter/issues) to see if the enhancement has already been suggested.
-2. If not, [open a new issue](https://github.com/MauCariApa-com/maucariapacom-church-starter/issues/new) to start a discussion about your idea. Please provide a clear description of the enhancement and why it would be beneficial.
+We love to hear new ideas to improve this site!
+1. Search [Issues](https://github.com/isiramos/isiramos/issues) to see if the enhancement has already been suggested.
+2. If not, [open a new issue](https://github.com/isiramos/isiramos/issues/new) to start a discussion about your idea. Please provide a clear description of the enhancement and why it would be beneficial.
 
 ### Pull Requests
 

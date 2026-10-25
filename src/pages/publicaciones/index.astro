@@ -7,7 +7,7 @@ import { formatDate } from "../../utils/dateUtils";
 
 // Get all publicaciones
 const allPublicaciones = await getCollection("publicaciones", ({ data }) => {
-  return import.meta.env.PROD ? !data.draft : true;
+  return !data.draft;
 });
 
 // Sort by date (newest first)
@@ -15,14 +15,17 @@ const publicaciones = allPublicaciones.sort((a, b) =>
   new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
 );
 
-// Get unique p and speakers for filters
-const date = [...new Set(publicaciones.map(publicaciones => publicaciones.data.series).filter(Boolean))];
-const autor = [...new Set(publicaciones.map(publicaciones => publicaciones.data.autor))];
+// Get unique series and autors for filters
+const series = [...new Set(publicaciones.map(publicaciones => publicaciones.data.series).filter(Boolean))];
+const autors = [...new Set(publicaciones.map(publicaciones => publicaciones.data.autor))];
+const categoria = [...new Set(publicaciones.map(publicaciones => publicaciones.data.categoria))];
+const formato = [...new Set(publicaciones.map(publicaciones => publicaciones.data.formato))];
+const years = [  ...new Set(    publicaciones.map((p) => p.data.date.getFullYear())  )].sort((a, b) => b - a);
 ---
 
 <BaseLayout
   title="Publicaciones | Isaac Ramos 2026"
-  description="Publicaciones originales del artista Visual Isaac Ramos. Se encuentran obras, fanzines de fotografía, cuentos y novelas ligeras. Adquiere los fanzines o leelos en línea."
+  description="Publicaciones originales del artista Visual Isaac Ramos. Se encuentran series, fanzines de fotografía, cuentos y novelas ligeras. Adquiere los fanzines o leelos en línea."
 >
   
   <!-- Lista de publicaciones -->
@@ -45,17 +48,35 @@ const autor = [...new Set(publicaciones.map(publicaciones => publicaciones.data.
               />
             </div>
             
-            <!-- Filtrar publicaciones-->
+            <!-- Categoria Filter -->
             {
-              date.length > 0 && (
+              categoria.length > 0 && (
                 <div class="mb-6">
-                  <label for="date" class="block text-sm font-medium text-gray-700 mb-1">Año</label>
+                  <label for="categoria" class="block text-sm font-medium text-gray-700 mb-1">Categoria</label>
                   <select 
-                    id="date" 
+                    id="categoria" 
                     class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500"
                   >
-                    <option value="">Todos los años</option>
-                    {date.map(s => (
+                    <option value="">Todas las categorias</option>
+                    {categoria.map(s => (
+                      <option value={s}>{s}</option>
+                    ))}
+                  </select>
+                </div>
+              )
+            }
+
+            <!-- series Filter -->
+            {
+              series.length > 0 && (
+                <div class="mb-6">
+                  <label for="series" class="block text-sm font-medium text-gray-700 mb-1">Series</label>
+                  <select 
+                    id="series" 
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500"
+                  >
+                    <option value="">Todas las series</option>
+                    {series.map(s => (
                       <option value={s}>{s}</option>
                     ))}
                   </select>
@@ -63,9 +84,9 @@ const autor = [...new Set(publicaciones.map(publicaciones => publicaciones.data.
               )
             }
             
-            <!-- Speaker Filter -->
+            <!-- Autor Filter -->
             {
-              autor.length > 0 && (
+              autors.length > 0 && (
                 <div class="mb-6">
                   <label for="autor" class="block text-sm font-medium text-gray-700 mb-1">Autor</label>
                   <select 
@@ -73,36 +94,55 @@ const autor = [...new Set(publicaciones.map(publicaciones => publicaciones.data.
                     class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500"
                   >
                     <option value="">Todos los autores</option>
-                    {autor.map(s => (
+                    {autors.map(s => (
                       <option value={s}>{s}</option>
                     ))}
                   </select>
                 </div>
               )
             }
-            
-            <!-- Date Range Filter -->
-            <div class="space-y-3">
-              <label class="block text-sm font-medium text-gray-700">Fecha</label>
-              
-              <div>
-                <label for="from-date" class="block text-xs text-gray-500 mb-1">Desde</label>
-                <input 
-                  type="number" 
-                  id="from-date" 
-                  class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500"
-                />
-              </div>
-              
-              <div>
-                <label for="to-date" class="block text-xs text-gray-500 mb-1">Hasta</label>
-                <input 
-                  type="number" 
-                  id="to-date" 
-                  class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500"
-                />
-              </div>
-            </div>
+
+            <!-- Formato Filter -->
+            {
+              formato.length > 0 && (
+                <div class="mb-6">
+                  <label for="formato" class="block text-sm font-medium text-gray-700 mb-1">Formato</label>
+                  <select 
+                    id="formato" 
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500"
+                  >
+                    <option value="">Todos los formatos</option>
+                    {formato.map(s => (
+                      <option value={s}>{s}</option>
+                    ))}
+                  </select>
+                </div>
+              )
+            }
+
+            {
+              years.length > 0 && (
+                <div class="mb-6">
+                  <label
+                    for="year"
+                    class="block text-sm font-medium text-gray-700 mb-1"
+                  >
+                    Año
+                  </label>
+
+                  <select
+                    id="year"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md"
+                  >
+                    <option value="">Todos los años</option>
+
+                    {years.map((year) => (
+                      <option value={year}>{year}</option>
+                    ))}
+                  </select>
+                </div>
+              )
+            }
             
             <!-- Reset Filters Button -->
             <button 
@@ -116,7 +156,7 @@ const autor = [...new Set(publicaciones.map(publicaciones => publicaciones.data.
         
         <!-- publicaciones Grid -->
         <div class="lg:col-span-3">
-          <h2 class="text-2xl font-bold mb-6">Todas las publicaciones</h2>
+          <h1 class="text-2xl font-bold mb-6">Todas las publicaciones</h1>
           
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="publicaciones-grid">
             {publicaciones.map((publicaciones) => (
@@ -128,8 +168,10 @@ const autor = [...new Set(publicaciones.map(publicaciones => publicaciones.data.
                 }}
                 href={`/publicaciones/${publicaciones.slug}`}
                 className="publicaciones-card"
+                dataSeries={publicaciones.data.series || ""}
                 dataAutor={publicaciones.data.autor}
                 dataDate={publicaciones.data.date.toISOString().slice(0, 10)}
+                dataYear={publicaciones.data.date.getFullYear()}
               >
                 <div class="mb-3 flex items-center text-gray-600">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -145,12 +187,12 @@ const autor = [...new Set(publicaciones.map(publicaciones => publicaciones.data.
                   <span>{publicaciones.data.autor}</span>
                 </div>
                 
-                {publicaciones.data.date && (
+                {publicaciones.data.series && (
                   <div class="mb-3 flex items-center text-gray-600">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                     </svg>
-                    <span>Año: {publicaciones.data.date}</span>
+                    <span>Series: {publicaciones.data.series}</span>
                   </div>
                 )}
                 
@@ -174,7 +216,7 @@ const autor = [...new Set(publicaciones.map(publicaciones => publicaciones.data.
           
           <!-- No Results Message (Hidden by default) -->
           <div id="no-results" class="hidden text-center py-12 bg-gray-50 rounded-lg mt-8">
-            <p class="text-gray-600">Sin resultados</p>
+            <p class="text-gray-600">No publicaciones match your search criteria. Please try different filters.</p>
           </div>
         </div>
       </div>
@@ -184,41 +226,44 @@ const autor = [...new Set(publicaciones.map(publicaciones => publicaciones.data.
   <script>
     // Filter functionality
     document.addEventListener('DOMContentLoaded', () => {
-      const searchInput = document.getElementById('search');
-      const dateSelect = document.getElementById('date');
-      const autorSelect = document.getElementById('autor');
-      const fromDateInput = document.getElementById('from-date');
-      const toDateInput = document.getElementById('to-date');
+      const searchInput = document.getElementById('search') as HTMLInputElement;
+      const seriesSelect = document.getElementById('series') as HTMLInputElement;
+      const autorSelect = document.getElementById('autor') as HTMLInputElement;
+      const fromDateInput = document.getElementById('from-date') as HTMLInputElement;
+      const toDateInput = document.getElementById('to-date') as HTMLInputElement;
+      const yearSelect = document.getElementById('year') as HTMLSelectElement;
       const resetButton = document.getElementById('reset-filters');
       const publicacionesGrid = document.getElementById('publicaciones-grid');
       const noResults = document.getElementById('no-results');
-      const publicacionesCards = document.querySelectorAll('.publicaciones-card');
+      const publicacionesCards = document.querySelectorAll<HTMLElement>('.publicaciones-card');
       
       // Function to filter publicaciones
       const filterPublicaciones = () => {
         const searchTerm = searchInput?.value.toLowerCase() || '';
-        const selectedDate = dateSelect?.value || '';
+        const selectedSeries = seriesSelect?.value || '';
         const selectedAutor = autorSelect?.value || '';
         const fromDate = fromDateInput?.value || '';
         const toDate = toDateInput?.value || '';
+        const selectedYear = yearSelect?.value || '';
         
         let visibleCount = 0;
         
         publicacionesCards.forEach(card => {
           const title = card.querySelector('h3')?.textContent.toLowerCase() || '';
           const summary = card.querySelector('p')?.textContent.toLowerCase() || '';
+          const series = card.getAttribute('data-series') || '';
           const autor = card.getAttribute('data-autor') || '';
           const date = card.getAttribute('data-date') || '';
-          
+          const year = card.getAttribute('data-year') || '';
+                    
           // Check if publicaciones matches all filters
           const matchesSearch = title.includes(searchTerm) || summary.includes(searchTerm);
-          const matchesDate = !selectedDate || date === selectedDate;
+          const matchesSeries = !selectedSeries || series === selectedSeries;
           const matchesAutor = !selectedAutor || autor === selectedAutor;
-          const matchesFromDate = !fromDate || date >= fromDate;
-          const matchesToDate = !toDate || date <= toDate;
+          const matchesYear = !selectedYear || year === selectedYear;
           
           // Show/hide the publicaciones card
-          if (matchesSearch && matchesDate && matchesAutor && matchesFromDate && matchesToDate) {
+          if (matchesSearch && matchesSeries && matchesAutor && matchesYear) {
             card.style.display = 'block';
             visibleCount++;
           } else {
@@ -234,7 +279,7 @@ const autor = [...new Set(publicaciones.map(publicaciones => publicaciones.data.
       
       // Add event listeners
       searchInput?.addEventListener('input', filterPublicaciones);
-      dateSelect?.addEventListener('change', filterPublicaciones);
+      seriesSelect?.addEventListener('change', filterPublicaciones);
       autorSelect?.addEventListener('change', filterPublicaciones);
       fromDateInput?.addEventListener('change', filterPublicaciones);
       toDateInput?.addEventListener('change', filterPublicaciones);
@@ -242,7 +287,7 @@ const autor = [...new Set(publicaciones.map(publicaciones => publicaciones.data.
       // Reset filters
       resetButton?.addEventListener('click', () => {
         if (searchInput) searchInput.value = '';
-        if (dateSelect) dateSelect.value = '';
+        if (seriesSelect) seriesSelect.value = '';
         if (autorSelect) autorSelect.value = '';
         if (fromDateInput) fromDateInput.value = '';
         if (toDateInput) toDateInput.value = '';

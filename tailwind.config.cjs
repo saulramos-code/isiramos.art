@@ -61,7 +61,7 @@ module.exports = {
       },
 
       fontFamily: {
-        serif: ['Cormorant Garamond', 'EB Garamond', 'serif'],
+        serif: ['Fraunces', 'serif'],
         sans: ['Inter', '"Source Sans Pro"', 'sans-serif'],
       },
     },

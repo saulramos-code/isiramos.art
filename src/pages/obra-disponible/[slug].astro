@@ -1,0 +1,144 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PostLayout from "../../layouts/PostLayout.astro";
+import Button from "../../components/UI/Button.astro";
+import OptimizedImage from "../../components/UI/OptimizedImage.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+
+    const obras = await getCollection("obras", ({ data }) => {
+        return !data.draft;
+    });
+
+    return obras.map((obra) => ({
+        params: {
+            slug: obra.slug
+        },
+        props: {
+            obra
+        }
+    }));
+}
+
+const { obra } = Astro.props;
+
+const { Content } = await obra.render();
+
+const related = (await getCollection("obras", ({ data }) => !data.draft))
+    .filter(item => item.slug !== obra.slug)
+    .slice(0,3);
+---
+
+<BaseLayout
+    title={`${obra.data.title} | Isaac Ramos`}
+    description={obra.data.seoDescription}
+    canonicalUrl={`/obras/${obra.slug}/`}
+    image={{
+        url: obra.data.image,
+        alt: `${obra.data.title} (${obra.data.year})`
+    }}
+    type="article"
+>
+
+<section class="py-[120px] bg-white">
+
+<div class="container max-w-6xl">
+
+    <OptimizedImage
+        src={obra.data.image}
+        alt={obra.data.title}
+        class="w-full aspect-[16/9] object-cover mb-20"
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+        widths={[480, 800, 1200, 1600]}
+        sizes="(max-width: 1024px) 100vw, 1200px"
+    />
+
+    <div class="grid lg:grid-cols-12 gap-20">
+
+        <!-- izquierda -->
+
+        <aside class="lg:col-span-4">
+
+            <p class="uppercase tracking-[0.3em] text-gray-500 text-sm">
+                Obra
+            </p>
+
+            <h1 class="text-4xl font-bold mt-4">
+                {obra.data.title}
+            </h1>
+
+            <div class="w-16 h-px bg-black mt-8 mb-8"></div>
+
+            <dl class="space-y-6">
+
+                <div>
+
+                    <dt class="uppercase text-xs tracking-[0.25em] text-gray-400">
+                        Año
+                    </dt>
+
+                    <dd class="mt-2">
+                        {obra.data.year}
+                    </dd>
+
+                </div>
+
+                {
+                    obra.data.tags && (
+
+                    <div>
+
+                        <dt class="uppercase text-xs tracking-[0.25em] text-gray-400">
+                            Categorías
+                        </dt>
+
+                        <dd class="flex flex-wrap gap-2 mt-3">
+
+                            {
+                                obra.data.tags.map(tag => (
+
+                                    <span class="text-sm text-gray-600">
+
+                                        {tag}
+
+                                    </span>
+
+                                ))
+                            }
+
+                        </dd>
+
+                    </div>
+
+                    )
+                }
+
+            </dl>
+
+            <Button
+                href="/contacto"
+                class="mt-12"
+            >
+                Solicitar información
+            </Button>
+
+        </aside>
+
+        <!-- derecha -->
+
+        <article class="lg:col-span-8 prose prose-lg max-w-none">
+
+            <h2>Sinopsis</h2>
+
+            <Content />
+
+        </article>
+
+    </div>
+
+</div>
+
+</section>

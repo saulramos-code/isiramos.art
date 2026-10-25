@@ -1,0 +1,39 @@
+---
+import ArtworkAvailableCard from "./ArtworkAvailableCard.astro";
+
+export interface Props {
+  artworks: {
+    slug: string;
+    data: {
+      title: string;
+      year: number;
+      image: string;
+    };
+  }[];
+}
+
+const { artworks } = Astro.props;
+---
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-x-14 gap-y-20">
+
+  {
+    artworks.map((artwork, index) => (
+      <div
+        class:list={[
+          "transition-all duration-500",
+
+          // Pequeño ritmo editorial
+        ]}
+      >
+        <ArtworkAvailableCard
+          title={artwork.data.title}
+          year={artwork.data.year}
+          image={artwork.data.image}
+          href={`/obras/${artwork.slug}`}
+        />
+      </div>
+    ))
+  }
+
+</div>

@@ -1,5 +1,5 @@
 {
-  "name": "maucariapacom-church-starter",
+  "name": "isiramos",
   "type": "module",
   "version": "0.1.0",
   "private": true,
@@ -10,11 +10,12 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.2.5",
-    "@astrojs/tailwind": "^5.1.0",
+    "@astrojs/partytown": "^2.1.9",
     "@astrojs/sitemap": "^3.1.1",
-    "tailwindcss": "^3.4.1",
-    "date-fns": "^3.3.1"
+    "@astrojs/tailwind": "^5.1.0",
+    "astro": "^5.2.5",
+    "date-fns": "^3.3.1",
+    "tailwindcss": "^3.4.1"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.10"

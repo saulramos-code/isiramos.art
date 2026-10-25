@@ -1,0 +1,88 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+import ArtworkGrid from "../../components/Obras/ArtworkGrid.astro";
+import Button from "../../components/UI/Button.astro";
+
+// Obtener únicamente las obras publicadas
+const artworks = await getCollection("obras", ({ data }) => {
+  return !data.draft;
+});
+
+// Ordenar de la más reciente a la más antigua
+artworks.sort((a, b) => b.data.year - a.data.year);
+---
+
+<BaseLayout
+  title="Obra disponible | Isaac Ramos"
+  description="Selección de fotografías, piezas y proyectos disponibles para adquisición."
+>
+
+<section class="py-[120px] bg-white">
+
+    <div class="container">
+
+        <!-- Encabezado -->
+
+        <div class="max-w-3xl mx-auto text-center mb-24">
+
+            <p class="uppercase tracking-[0.35em] text-sm text-gray-500 mb-5">
+                Colección
+            </p>
+
+            <h1 class="text-4xl md:text-5xl font-bold mb-8">
+                Obra disponible
+            </h1>
+
+            <div class="w-20 h-px bg-texto-900 mx-auto mb-10"></div>
+
+            <p class="text-lg leading-relaxed text-gray-600">
+                Una selección de obras disponibles para adquisición.
+                Cada pieza forma parte de procesos de investigación relacionados
+                con la memoria, los objetos y el territorio.
+            </p>
+
+        </div>
+
+        <!-- Grid -->
+
+                {
+                    artworks.length > 0 ? (
+                        <ArtworkGrid artworks={artworks} />
+                    ) : (
+                        <p class="text-center text-gray-600">
+                            Actualmente no hay obras disponibles.
+                        </p>
+                    )
+                }
+
+        <!-- Separador -->
+
+        <div class="max-w-2xl mx-auto mt-32 text-center">
+
+            <div class="w-20 h-px bg-texto-900 mx-auto mb-10"></div>
+
+            <h2 class="text-2xl font-semibold mb-6">
+                Adquirir una obra
+            </h2>
+
+            <p class="text-gray-600 leading-relaxed mb-10">
+
+                Si te interesa incorporar alguna pieza a una colección privada,
+                institucional o corporativa, puedes solicitar información sobre
+                disponibilidad, formatos, precios y envíos.
+
+            </p>
+
+            <Button href="/contacto">
+                Solicitar información
+            </Button>
+
+        </div>
+
+    </div>
+
+</section>
+
+</BaseLayout>

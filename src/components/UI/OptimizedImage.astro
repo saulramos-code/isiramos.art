@@ -1,0 +1,43 @@
+---
+import { Image } from "astro:assets";
+import { resolveImage } from "../../utils/imageResolver";
+
+interface Props {
+  src: string;
+  alt: string;
+  class?: string;
+  widths?: number[];
+  sizes?: string;
+  loading?: "eager" | "lazy";
+  fetchpriority?: "high" | "low" | "auto";
+  decoding?: "async" | "sync" | "auto";
+  ariaHidden?: boolean;
+}
+
+const {
+  src,
+  alt,
+  class: className,
+  widths = [320, 640, 960, 1280],
+  sizes = "(max-width: 768px) 100vw, 50vw",
+  loading = "lazy",
+  fetchpriority,
+  decoding = "async",
+  ariaHidden,
+} = Astro.props;
+
+const image = resolveImage(src);
+---
+
+<Image
+  src={image}
+  alt={alt}
+  class={className}
+  widths={widths}
+  sizes={sizes}
+  format="webp"
+  loading={loading}
+  fetchpriority={fetchpriority}
+  decoding={decoding}
+  aria-hidden={ariaHidden}
+/>

@@ -3,6 +3,7 @@ import "../assets/styles/global.css";
 import Seo from "../components/UI/Seo.astro";
 import Header from "../components/Global/Header.astro";
 import Footer from "../components/Global/Footer.astro";
+import Breadcrumbs from "../components/Global/Breadcrumbs.astro";
 
 export interface Props {
   title?: string;
@@ -13,6 +14,11 @@ export interface Props {
   };
   type?: "website" | "article";
   canonicalUrl?: string;
+  robots?: string;
+  artwork?: {
+    name: string;
+    year?: string | number;
+  };
 }
 
 const {
@@ -24,6 +30,8 @@ const {
   },
   type = "website",
   canonicalUrl,
+  robots,
+  artwork,
 } = Astro.props;
 ---
 
@@ -32,6 +40,8 @@ const {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="icon" type="image/ico" href="/favicon.ico" />
     <meta name="generator" content={Astro.generator} />
     
@@ -41,8 +51,10 @@ const {
       image={image}
       type={type}
       canonicalUrl={canonicalUrl}
+      robots={robots}
+      artwork={artwork}
     />
-    
+
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -52,6 +64,7 @@ const {
   <body>
     <div class="flex flex-col min-h-screen">
       <Header />
+      <Breadcrumbs />
       
       <main class="flex-grow">
         <slot />
@@ -59,5 +72,97 @@ const {
       
       <Footer />
     </div>
+
+      <noscript>
+    <img
+      height="1"
+      width="1"
+      style="display:none"
+      src="https://www.facebook.com/tr?id=1468323285135254&ev=PageView&noscript=1"
+      alt=""
+    />
+  </noscript>
+
+  <script
+    type="text/partytown"
+    async
+    src="https://www.googletagmanager.com/gtag/js?id=G-8ER75LRC75"
+  ></script>
+  <script type="text/partytown">
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function() {
+      window.dataLayer.push(arguments);
+    };
+    window.gtag('js', new Date());
+    window.gtag('config', 'G-8ER75LRC75');
+
+    document.addEventListener('click', (event) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+
+      const link = target.closest('a');
+      if (link instanceof HTMLAnchorElement) {
+        const linkUrl = link.href;
+        const article = document.querySelector('article');
+        const obraTitle = article
+          ? document.querySelector('main h1')?.textContent?.trim()
+          : undefined;
+
+        if (linkUrl.includes('wa.me')) {
+          fbq('trackCustom', 'WhatsAppClick', {
+            link_url: linkUrl,
+            ...(obraTitle ? { obra: obraTitle } : {}),
+          });
+        }
+
+        if (new URL(linkUrl).pathname === '/contacto') {
+          fbq('trackCustom', 'ContactClick', { link_url: linkUrl });
+        }
+      }
+
+      const element = target.closest('[data-analytics-event]');
+      if (!element) return;
+
+      const eventName = element.getAttribute('data-analytics-event');
+      if (!eventName) return;
+
+      window.gtag('event', eventName, {
+        link_url: element.getAttribute('href') || undefined,
+        link_text: element.textContent?.trim() || undefined,
+      });
+    });
+
+    document.addEventListener('submit', (event) => {
+      const form = event.target;
+      if (!(form instanceof HTMLFormElement)) return;
+
+      const formName = form.getAttribute('data-analytics-form');
+      if (!formName) return;
+
+      window.gtag('event', 'contact_submit', { form_name: formName });
+      if (form.checkValidity()) fbq('trackCustom', 'ContactSubmit');
+    });
+  </script>
+  <script type="text/partytown">
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;
+    n.push=n;
+    n.loaded=!0;
+    n.version='2.0';
+    n.queue=[];
+    t=b.createElement(e);
+    t.async=!0;
+    t.src=v;
+    s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)
+    }(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+
+    fbq('init', '1468323285135254');
+    fbq('track', 'PageView');
+  </script>
+
   </body>
 </html>

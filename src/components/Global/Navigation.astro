@@ -1,193 +1,172 @@
 ---
-// Define the navigation items
 const navItems = [
   { text: "CV", href: "/sobre-mi" },
   { text: "Obra", href: "/obras" },
   { text: "Proyectos", href: "/proyectos" },
-  { text: "Publicaciones", href: "/publicaciones" },
-  { text: "Blog", href: "/blog" },
   { text: "Contacto", href: "/contacto" },
 ];
 
-// Get the current URL path to highlight the active link
 const currentPath = Astro.url.pathname;
+
+const isCurrentPage = (href: string) => {
+  return (
+    currentPath === href ||
+    (href !== "/" && currentPath.startsWith(`${href}/`))
+  );
+};
 ---
 
-<!-- Desktop Navigation -->
-<nav class="hidden lg:block">
-  <ul class="flex items-center space-x-12">
+<!-- =====================================================
+     DESKTOP NAVIGATION
+====================================================== -->
+
+<nav
+  class="hidden lg:block"
+  aria-label="Navegación principal"
+>
+  <ul class="site-nav">
+
     {
       navItems.map((item) => {
-        const isActive = currentPath === item.href || 
-                         (item.href !== "/" && currentPath.startsWith(item.href));
-         
-        
+        const isActive = isCurrentPage(item.href);
+
         return (
           <li>
-        <a
-          href={item.href}
-          class={`relative text-sm uppercase tracking-[0.08em] transition-colors ${
-            isActive
-              ? "text-texto-950"
-              : "text-texto-600 hover:text-naranja-100"
-          } ${
-            item.text === "Obra" ? "font-semibold" : "font-normal"
-          }`}
-          aria-current={isActive ? "page" : undefined}
-        >
-          {item.text}
-
-          {
-            isActive && (
-              <span class="absolute left-0 -bottom-2 w-full h-px bg-texto-950"></span>
-            )
-          }
-        </a>
+            <a
+              href={item.href}
+              class:list={[
+                "site-nav__link",
+                { "site-nav__link--active": isActive },
+              ]}
+              aria-current={isActive ? "page" : undefined}
+            >
+              {item.text}
+            </a>
           </li>
         );
       })
     }
+
   </ul>
 </nav>
 
-<!-- Mobile Menu Button -->
+
+<!-- =====================================================
+     MOBILE MENU BUTTON
+====================================================== -->
+
 <button
   id="mobile-menu-button"
-  class="lg:hidden p-2 text-gray-700 hover:text-naranja-100 focus:outline-none transition-colors relative"
-  aria-label="Toggle Menu"
+  class="mobile-menu-button lg:hidden"
+  type="button"
+  aria-label="Abrir menú"
   aria-expanded="false"
+  aria-controls="mobile-menu"
 >
-  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-  </svg>
+  <span></span>
+  <span></span>
 </button>
 
-<!-- Mobile Menu Dropdown - Compact & Clean -->
-<div
+
+<!-- =====================================================
+     MOBILE NAVIGATION
+====================================================== -->
+
+<nav
   id="mobile-menu"
-  class="absolute top-full left-0 right-0 bg-white shadow-lg border-t border-gray-100 transform scale-y-0 origin-top transition-transform duration-200 ease-out lg:hidden z-50"
-  role="menu"
-  aria-labelledby="mobile-menu-button"
+  class="mobile-menu lg:hidden"
+  aria-label="Navegación principal"
+  aria-hidden="true"
 >
-  <!-- Navigation Links in Grid -->
-  <div class="px-4 py-6">
-    <div class="grid grid-cols-2 gap-3">
+  <div class="mobile-menu__inner">
+
+    <ul class="mobile-menu__list">
+
       {
         navItems.map((item) => {
-          const isActive = currentPath === item.href || 
-                           (item.href !== "/" && currentPath.startsWith(item.href));
-          
+          const isActive = isCurrentPage(item.href);
+
           return (
+            <li>
               <a
                 href={item.href}
-                class={`relative text-sm uppercase tracking-[0.08em] ${
-                  isActive
-                    ? "text-texto-950"
-                    : "text-texto-600 hover:text-texto-950"
-                }`}
-              
-              role="menuitem"
-              aria-current={isActive ? "page" : undefined}
-            >
-            {
-              isActive && (
-                <span class="absolute left-0 -bottom-2 w-full h-px bg-texto-950"></span>
-              )
-            }
-              {item.text}
-            </a>
+                class:list={[
+                  "mobile-menu__link",
+                  { "mobile-menu__link--active": isActive },
+                ]}
+                aria-current={isActive ? "page" : undefined}
+              >
+                {item.text}
+              </a>
+            </li>
           );
         })
       }
-    </div>
-  </div>
-</div>
 
-<style>
-  /* Mobile menu button animation */
-  #mobile-menu-button:hover svg {
-    transform: scale(1.1);
-  }
-  
-  #mobile-menu-button svg {
-    transition: transform 0.2s ease;
-  }
-  
-  /* Mobile menu show/hide states */
-  #mobile-menu.show {
-    transform: scaleY(1);
-  }
-  
-  /* Smooth hover effects */
-  #mobile-menu a {
-    transition: all 0.15s ease;
-  }
-  
-  /* Active state styling */
-  #mobile-menu a[aria-current="page"] {
-    font-weight: 600;
-  }
-</style>
+    </ul>
+
+  </div>
+</nav>
+
 
 <script>
-  // Mobile menu functionality
-  document.addEventListener('DOMContentLoaded', () => {
-    const mobileMenuButton = document.getElementById('mobile-menu-button');
-    const mobileMenu = document.getElementById('mobile-menu');
-    
-    let isMenuOpen = false;
-    
-    // Function to toggle mobile menu
-    const toggleMobileMenu = () => {
-      isMenuOpen = !isMenuOpen;
-      
-      if (isMenuOpen) {
-        // Show menu
-        mobileMenu.classList.add('show');
-        mobileMenuButton.setAttribute('aria-expanded', 'true');
-      } else {
-        // Hide menu
-        mobileMenu.classList.remove('show');
-        mobileMenuButton.setAttribute('aria-expanded', 'false');
-      }
+  const button = document.getElementById("mobile-menu-button");
+  const menu = document.getElementById("mobile-menu");
+
+  if (button && menu) {
+
+    const openMenu = () => {
+      button.setAttribute("aria-expanded", "true");
+      button.setAttribute("aria-label", "Cerrar menú");
+
+      menu.setAttribute("aria-hidden", "false");
+      menu.classList.add("mobile-menu--open");
+
+      document.body.classList.add("menu-open");
     };
-    
-    // Event listeners
-    mobileMenuButton?.addEventListener('click', (e) => {
-      e.stopPropagation();
-      toggleMobileMenu();
-    });
-    
-    // Close menu when clicking outside
-    document.addEventListener('click', (e) => {
-      if (isMenuOpen && !e.target instanceof Node &&
-        mobileMenu.contains(e.target) && !mobileMenuButton.contains(e.target)) {
-        toggleMobileMenu();
+
+    const closeMenu = () => {
+      button.setAttribute("aria-expanded", "false");
+      button.setAttribute("aria-label", "Abrir menú");
+
+      menu.setAttribute("aria-hidden", "true");
+      menu.classList.remove("mobile-menu--open");
+
+      document.body.classList.remove("menu-open");
+    };
+
+    button.addEventListener("click", () => {
+
+      const isOpen =
+        button.getAttribute("aria-expanded") === "true";
+
+      if (isOpen) {
+        closeMenu();
+      } else {
+        openMenu();
       }
+
     });
-    
-    // Close menu when clicking a navigation link
-    const navLinks = mobileMenu?.querySelectorAll('a[href^="/"]');
-    navLinks?.forEach(link => {
-      link.addEventListener('click', () => {
-        if (isMenuOpen) {
-          setTimeout(() => toggleMobileMenu(), 100);
-        }
-      });
+
+    menu.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", closeMenu);
     });
-    
-    // Keyboard navigation
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && isMenuOpen) {
-        toggleMobileMenu();
+
+    document.addEventListener("keydown", (event) => {
+
+      if (event.key === "Escape") {
+        closeMenu();
       }
+
     });
-    
-    // Handle window resize
-    window.addEventListener('resize', () => {
-      if (window.innerWidth >= 1024 && isMenuOpen) {
-        toggleMobileMenu();
+
+    window.addEventListener("resize", () => {
+
+      if (window.innerWidth >= 1024) {
+        closeMenu();
       }
+
     });
-  });
+
+  }
 </script>

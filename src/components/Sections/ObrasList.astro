@@ -13,7 +13,7 @@ const { count = 6, showViewAll = true } = Astro.props;
 
 // Get events sorted by  (newest first)
 const allObras = await getCollection("obras", ({ data }) => {
-  return import.meta.env.PROD ? !data.draft : true;
+  return !data.draft;
 });
 
 const obras = allObras

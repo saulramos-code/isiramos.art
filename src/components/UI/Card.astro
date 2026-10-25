@@ -1,4 +1,6 @@
 ---
+import OptimizedImage from "./OptimizedImage.astro";
+
 export interface Props {
   title: string;
   image?: {
@@ -8,12 +10,13 @@ export interface Props {
   dataSeries?: string;
   dataAutor?: string;
   dataDate?: string;
+  dataYear?: string | number;
   href?: string;
   className?: string;
   imageLayout?: 'top' | 'background';
 }
 
-const { title, image, href, className = "", imageLayout = 'top', dataSeries, dataAutor, dataDate} = Astro.props;
+const { title, image, href, className = "", imageLayout = 'top', dataSeries, dataAutor, dataDate, dataYear } = Astro.props;
 const Element = href ? "a" : "div";
 ---
 
@@ -23,6 +26,7 @@ const Element = href ? "a" : "div";
   data-series={dataSeries}
   data-speaker={dataAutor}
   data-date={dataDate}
+  data-year={dataYear}
   class:list={[
     'card group overflow-hidden',
     { 'relative': imageLayout === 'background' },
@@ -34,9 +38,13 @@ const Element = href ? "a" : "div";
       'overflow-hidden',
       { 'absolute inset-0': imageLayout === 'background' }
     ]}>
-      <img
+      <OptimizedImage
         src={image.src}
         alt={image.alt}
+        loading="lazy"
+        decoding="async"
+        widths={[320, 480, 640, 960]}
+        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
         class:list={[
           "w-full object-cover object-center transition-transform duration-300 hover:scale-105",
           { 'h-full': imageLayout === 'background', 'h-auto': imageLayout === 'top' }
@@ -49,7 +57,7 @@ const Element = href ? "a" : "div";
     'p-5',
     { 'relative': imageLayout === 'background' }
   ]}>
-    <h3 class="mb-2 text-xl font-bold">{title}</h3>
+    <h3 class="card-title mb-2">{title}</h3>
     <div class="text-gray-700">
       <slot />
     </div>

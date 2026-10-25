@@ -7,7 +7,7 @@ import { formatDate } from "../../utils/dateUtils";
 
 // Get all blog posts
 const allPosts = await getCollection("blog", ({ data }) => {
-  return import.meta.env.PROD ? !data.draft : true;
+  return !data.draft;
 });
 
 // Sort by date (newest first)
@@ -20,12 +20,13 @@ const tags = [...new Set(posts.flatMap(post => post.data.tags))];
 ---
 
 <BaseLayout
-  title="blog - Church Name"
-  description="Read our latest articles, devotionals, and updates from our church community."
+  title="Blog | Isaac Ramos"
+  description="Artículos y reflexiones sobre práctica artística."
+  robots="noindex, follow"
 >
   <PageHeader 
     title="blog" 
-    subtitle="Insights, devotionals, and updates from our church community"
+    subtitle="Artículos y reflexiones sobre práctica artística"
     backgroundImage="/uploads/blog-header-bg.webp"
   />
   
@@ -175,15 +176,15 @@ const tags = [...new Set(posts.flatMap(post => post.data.tags))];
   <script>
     // Filter functionality
     document.addEventListener('DOMContentLoaded', () => {
-      const searchInput = document.getElementById('search');
-      const authorInput = document.getElementById('author');
-      const tagCheckboxes = document.querySelectorAll('.tag-checkbox');
-      const fromDateInput = document.getElementById('from-date');
-      const toDateInput = document.getElementById('to-date');
-      const resetButton = document.getElementById('reset-filters');
-      const postsGrid = document.getElementById('posts-grid');
-      const noResults = document.getElementById('no-results');
-      const blogCards = document.querySelectorAll('.blog-card');
+      const searchInput = document.getElementById('search') as HTMLInputElement | null;
+      const authorInput = document.getElementById('author') as HTMLInputElement | null;
+      const tagCheckboxes = document.querySelectorAll<HTMLInputElement>('.tag-checkbox');
+      const fromDateInput = document.getElementById('from-date') as HTMLInputElement | null;
+      const toDateInput = document.getElementById('to-date') as HTMLInputElement | null;
+      const resetButton = document.getElementById('reset-filters') as HTMLButtonElement | null;
+      const postsGrid = document.getElementById('posts-grid') as HTMLElement | null;
+      const noResults = document.getElementById('no-results') as HTMLElement | null;
+      const blogCards = document.querySelectorAll<HTMLElement>('.blog-card');
       
       // Function to filter blog posts
       const filterPosts = () => {
@@ -194,14 +195,16 @@ const tags = [...new Set(posts.flatMap(post => post.data.tags))];
         
         // Get selected tags
         const selectedTags = Array.from(tagCheckboxes)
-          .filter(checkbox => checkbox.checked)
-          .map(checkbox => checkbox.value);
+          .filter((checkbox: HTMLInputElement) => checkbox.checked)
+          .map((checkbox: HTMLInputElement) => checkbox.value);
         
         let visibleCount = 0;
         
-        blogCards.forEach(card => {
-          const title = card.querySelector('h3')?.textContent.toLowerCase() || '';
-          const description = card.querySelector('p')?.textContent.toLowerCase() || '';
+        blogCards.forEach((card: HTMLElement) => {
+          const titleEl = card.querySelector('h3') as HTMLElement | null;
+          const descriptionEl = card.querySelector('p') as HTMLElement | null;
+          const title = titleEl?.textContent?.toLowerCase() || '';
+          const description = descriptionEl?.textContent?.toLowerCase() || '';
           const author = card.getAttribute('data-author')?.toLowerCase() || '';
           const date = card.getAttribute('data-date') || '';
           const tags = (card.getAttribute('data-tags') || '').split(',');
@@ -234,7 +237,7 @@ const tags = [...new Set(posts.flatMap(post => post.data.tags))];
       // Add event listeners
       searchInput?.addEventListener('input', filterPosts);
       authorInput?.addEventListener('input', filterPosts);
-      tagCheckboxes.forEach(checkbox => {
+      tagCheckboxes.forEach((checkbox: HTMLInputElement) => {
         checkbox.addEventListener('change', filterPosts);
       });
       fromDateInput?.addEventListener('change', filterPosts);
@@ -244,7 +247,7 @@ const tags = [...new Set(posts.flatMap(post => post.data.tags))];
       resetButton?.addEventListener('click', () => {
         if (searchInput) searchInput.value = '';
         if (authorInput) authorInput.value = '';
-        tagCheckboxes.forEach(checkbox => {
+        tagCheckboxes.forEach((checkbox: HTMLInputElement) => {
           checkbox.checked = false;
         });
         if (fromDateInput) fromDateInput.value = '';

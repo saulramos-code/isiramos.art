@@ -1,34 +1,27 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageHeader from "../../components/Sections/PageHeader.astro";
+import OptimizedImage from "../../components/UI/OptimizedImage.astro";
 import { getCollection } from "astro:content";
 
 // Fetch all proyectos
 const all = await getCollection("proyectos", ({ data }) =>
-  import.meta.env.PROD ? !data.draft : true
-);
-// Sort by order or name
-const proyectos = all.sort((a, b) =>
-  (a.data.order ?? 0) - (b.data.order ?? 0) ||
-  a.data.name.localeCompare(b.data.name)
+  !data.draft
 );
 
-const proyectosArteobjeto = all.filter((proyectos) =>
-  proyectos.data.tags?.includes("arte-objeto")
-);
+const proyectosFotografia = all
+  .filter((proyecto) => proyecto.data.categoria === "fotografia")
+  .sort((a, b) => (a.data.order ?? 0) - (b.data.order ?? 0) || a.data.name.localeCompare(b.data.name));
 
-const proyectosSeriesFotograficas = all.filter((proyectos) =>
-  proyectos.data.tags?.includes("arte-objeto")
-);
+const proyectosArteObjeto = all
+  .filter((proyecto) => proyecto.data.categoria === "arte-objeto")
+  .sort((a, b) => (a.data.order ?? 0) - (b.data.order ?? 0) || a.data.name.localeCompare(b.data.name));
 
-const proyectosVideodigital = all.filter((proyectos) =>
-  proyectos.data.tags?.includes("video digital")
-);
 ---
 
 <BaseLayout 
   title="Proyectos | Isaac Ramos 2026"  
-  description="Discover our proyectos.">
+  description="Series fotográficas, arte objeto y publicaciones de Isaac Ramos.">
 
   <section class="py-[120px] bg-white">
   <!--Título-->
@@ -49,10 +42,15 @@ const proyectosVideodigital = all.filter((proyectos) =>
     </div>
 
     <div>
-        <img
+        <OptimizedImage
           src="/uploads/proyectos-isaac-ramos.webp"
           alt="Proyectos de Isaac Ramos"
           class="w-full h-[450px] object-cover"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+          widths={[480, 800, 1200, 1600]}
+          sizes="(max-width: 1024px) 100vw, 50vw"
         />
     </div>
   </div>  
@@ -62,45 +60,49 @@ const proyectosVideodigital = all.filter((proyectos) =>
   <div class="container gap-20"> 
     <!-- Series fotográficas -->
     <article>
-      <!-- Año -->
       <p class="text-sm uppercase tracking-[0.25em] text-texto-500 mb-4">
           2024-2026
       </p>
-      <!-- Título -->
       <h2 class="font-serif text-3xl md:text-5xl text-texto-950 mb-10 transition-colors duration-300 group-hover:text-naranja-100">
-        <a href="/proyectos/series-fotograficas">Series fotográficas</a>
+        <a href="/proyectos">Fotografía contemporánea</a>
       </h2>
-      <!-- Card --> 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {proyectos.map(proyectos => (
-        <a
-          href={`/proyectos/${proyectos.slug}`}
-          class="
-          g-white rounded-lg shadow 
-          flex flex-col overflow-hidden 
-          hover:shadow-lg transition
-          min-h-[370px]
-          "
-        >
-            <!-- gambar fixed height 200px -->
-            {proyectos.data.logo && (
-              <div class="w-full h-[200px] overflow-hidden">
-                <img
-                  src={proyectos.data.logo}
-                  alt={proyectos.data.name}
-                  class="w-full h-full object-cover"
-                />
-              </div>
-            )}
+        {proyectosFotografia.length > 0 ? (
+          proyectosFotografia.map((proyecto) => (
+            <a
+              href={`/proyectos/${proyecto.slug}`}
+              class="g-white rounded-lg shadow flex flex-col overflow-hidden hover:shadow-lg transition min-h-[370px]"
+            >
+              {proyecto.data.logo && (
+                <div class="w-full h-[200px] overflow-hidden">
+                  <OptimizedImage
+                    src={proyecto.data.logo}
+                    alt={proyecto.data.name}
+                    class="w-full h-full object-cover"
+                    loading="lazy"
+                    decoding="async"
+                    widths={[320, 640, 960]}
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                  />
+                </div>
+              )}
 
-            <div class="p-4 flex flex-col flex-1 justify-between">
-              <div>
-                <h3 class="text-xl font-semibold mb-2">{proyectos.data.name}</h3>
-                <p class="text-gray-700">{proyectos.data.summary}</p>
+              <div class="p-4 flex flex-col flex-1 justify-between">
+                <div>
+                  <h3 class="text-xl font-semibold mb-2">{proyecto.data.name}</h3>
+                  {proyecto.data.year && (
+                    <p class="mb-2 text-xs uppercase tracking-[0.2em] text-gray-500">
+                      {proyecto.data.year}
+                    </p>
+                  )}
+                  <p class="text-gray-700">{proyecto.data.summary}</p>
+                </div>
               </div>
-            </div>
-          </a>
-        ))}
+            </a>
+          ))
+        ) : (
+          <p class="text-gray-600">No hay proyectos de fotografía contemporánea activos.</p>
+        )}
       </div>
     </article>
   </div>
@@ -108,47 +110,50 @@ const proyectosVideodigital = all.filter((proyectos) =>
 
 <section class="py-[60px] group">
   <div class="container gap-20"> 
-    <!-- Arte objeto -->
     <article>
-      <!-- Año -->
       <p class="text-sm uppercase tracking-[0.25em] text-texto-500 mb-4">
           2025-2026
       </p>
-      <!-- Título -->
       <h2 class="font-serif text-3xl md:text-5xl text-texto-950 mb-10 transition-colors duration-300 group-hover:text-naranja-100">
-        <a href="/proyectos/series-fotograficas">Arte objeto</a>
+        <a href="/proyectos">Arte objeto</a>
       </h2>
-      <!-- Card --> 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {proyectos.map(proyectos => (
-        <a
-          href={`/proyectos/${proyectos.slug}`}
-          class="
-          g-white rounded-lg shadow 
-          flex flex-col overflow-hidden 
-          hover:shadow-lg transition
-          min-h-[370px]
-          "
-        >
-            <!-- gambar fixed height 200px -->
-            {proyectos.data.logo && (
-              <div class="w-full h-[200px] overflow-hidden">
-                <img
-                  src={proyectos.data.logo}
-                  alt={proyectos.data.name}
-                  class="w-full h-full object-cover"
-                />
-              </div>
-            )}
+        {proyectosArteObjeto.length > 0 ? (
+          proyectosArteObjeto.map((proyecto) => (
+            <a
+              href={`/proyectos/${proyecto.slug}`}
+              class="g-white rounded-lg shadow flex flex-col overflow-hidden hover:shadow-lg transition min-h-[370px]"
+            >
+              {proyecto.data.logo && (
+                <div class="w-full h-[200px] overflow-hidden">
+                  <OptimizedImage
+                    src={proyecto.data.logo}
+                    alt={proyecto.data.name}
+                    class="w-full h-full object-cover"
+                    loading="lazy"
+                    decoding="async"
+                    widths={[320, 640, 960]}
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                  />
+                </div>
+              )}
 
-            <div class="p-4 flex flex-col flex-1 justify-between">
-              <div>
-                <h3 class="text-xl font-semibold mb-2">{proyectos.data.name}</h3>
-                <p class="text-gray-700">{proyectos.data.summary}</p>
+              <div class="p-4 flex flex-col flex-1 justify-between">
+                <div>
+                  <h3 class="text-xl font-semibold mb-2">{proyecto.data.name}</h3>
+                  {proyecto.data.year && (
+                    <p class="mb-2 text-xs uppercase tracking-[0.2em] text-gray-500">
+                      {proyecto.data.year}
+                    </p>
+                  )}
+                  <p class="text-gray-700">{proyecto.data.summary}</p>
+                </div>
               </div>
-            </div>
-          </a>
-        ))}
+            </a>
+          ))
+        ) : (
+          <p class="text-gray-600">No hay proyectos de arte objeto activos.</p>
+        )}
       </div>
     </article>
   </div>

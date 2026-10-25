@@ -1,0 +1,59 @@
+---
+import OptimizedImage from "../UI/OptimizedImage.astro";
+
+export interface Props {
+  title: string;
+  year: number;
+  image: string;
+  href: string;
+}
+
+const { title, year, image, href } = Astro.props;
+---
+
+<a
+  href={href}
+  class="group block"
+>
+  <!-- Imagen -->
+  <div class="overflow-hidden rounded-sm bg-neutral-100">
+    <OptimizedImage
+      src={image}
+      alt={title}
+      loading="lazy"
+      decoding="async"
+      widths={[320, 480, 640, 960]}
+      sizes="(max-width: 768px) 100vw, 33vw"
+      class="aspect-[4/5] w-full object-cover transition duration-700 ease-out group-hover:scale-[1.02]"
+    />
+  </div>
+
+  <!-- Información -->
+  <div class="pt-6 text-center">
+
+    <p class="text-xs uppercase tracking-[0.35em] text-gray-400">
+      {year}
+    </p>
+
+    <h3 class="obra-title mt-2 text-texto-950 transition-colors duration-300">{title}</h3>
+
+    <!-- Línea -->
+    <div
+      class="mx-auto mt-4 h-px w-12 bg-texto-900 transition-all duration-500 group-hover:w-24"
+    ></div>
+
+    <!-- CTA -->
+    <p
+      class="mt-5 inline-flex items-center gap-2 text-sm uppercase tracking-[0.25em] text-gray-600 transition-all duration-300 group-hover:gap-4 group-hover:text-texto-950"
+    >
+      Explorar colección
+
+      <span
+        class="transition-transform duration-300 group-hover:translate-x-1"
+      >
+        →
+      </span>
+    </p>
+
+  </div>
+</a>

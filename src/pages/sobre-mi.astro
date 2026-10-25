@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHeader from "../components/Sections/PageHeader.astro";
+import OptimizedImage from "../components/UI/OptimizedImage.astro";
 ---
 
   <!-- Realizar la meta descripción -->
@@ -29,10 +30,15 @@ import PageHeader from "../components/Sections/PageHeader.astro";
         </div>
         
         <div>
-          <img 
+          <OptimizedImage
             src="/uploads/isaac-ramos-artista-visual.webp" 
             alt="isaac-ramos-artista-visual" 
             class="rounded-lg shadow-lg object-cover w-full h-full"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+            widths={[320, 640, 960]}
+            sizes="(max-width: 768px) 100vw, 50vw"
           />
         </div>
       </div>
@@ -50,10 +56,14 @@ import PageHeader from "../components/Sections/PageHeader.astro";
 
     <!-- Imagen -->
     <div class="mb-24">
-      <img
+      <OptimizedImage
         src="/uploads/caminantes-en-la-carretera-obra-de-isaac-ramos.webp"
         alt="Caminantes en la carretera, obra de Isaac Ramos"
         class="w-full h-[500px] md:h-[650px] object-cover rounded-lg"
+        loading="lazy"
+        decoding="async"
+        widths={[480, 800, 1200, 1600]}
+        sizes="(max-width: 768px) 100vw, 1200px"
       />
     </div>
 
@@ -81,23 +91,23 @@ import PageHeader from "../components/Sections/PageHeader.astro";
 
           <ul class="space-y-4 text-lg leading-relaxed text-texto-700">
             <li class="pl-4 border-l border-texto-300">
-              Ganador del premio “Best Experimental Film” en el Carnaval
+              Ganador del premio <em>“Best Experimental Film”</em> en el Carnaval
               L'Ours Noir Mont-Louis 2026. Colaboración con Aztrosharper.
               Mont-Louis, Francia.
             
 
             <li class="pl-4 border-l border-texto-300">
-              Nominado en la categoría “Best Student Animation”.
+              Nominado en la categoría <em>“Best Student Animation”</em>.
               Carnaval L'Ours Noir Mont-Louis 2026.
             </li>
 
             <li class="pl-4 border-l border-texto-300">
-              Seleccionado para la categoría Cineminuto en el Festival Pixeatl 2026
+              Seleccionado para la categoría <em>Cineminuto</em>o en el Festival Pixeatl 2026.
               Guadalajara, Jalisco.
             </li>
 
             <li class="pl-4 border-l border-texto-300">
-              Seleccionado en el concurso El Lado C de la Animación.
+              Seleccionado en el concurso <em>El Lado C de la Animación</em>.
               Morelia, Michoacán.
             </li>
           </ul>
@@ -110,7 +120,7 @@ import PageHeader from "../components/Sections/PageHeader.astro";
 
           <ul class="space-y-4 text-lg leading-relaxed text-texto-700">
             <li class="pl-4 border-l border-texto-300">
-              Primer lugar en el concurso Hojas de Otoño 2025.
+              Primer lugar en el concurso <em>Hojas de Otoño 2025</em>.
               Universidad Iberoamericana Torreón.
             </li>
           </ul>
@@ -132,29 +142,24 @@ import PageHeader from "../components/Sections/PageHeader.astro";
 
         <ul class="space-y-4 text-lg leading-relaxed text-texto-700">
           <li class="pl-4 border-l border-texto-300">
-            Concurso de Arte Linoollõikekonkurss 2025.
-            TYPA Letterpress and Paper Art Centre. Estonia.
+            Concurso de Arte <em>Linoollõikekonkurss 2025</em>.
+            TYPA Letterpress and Paper Art Centre. Tartú, Estonia.
           </li>
 
           <li class="pl-4 border-l border-texto-300">
-            Hojas de Otoño 2025. Libro-Objeto. 
-            Galería Universitaria San Francisco de Borja.
+            <em>Hojas de Otoño 2025. Libro-Objeto. </em>
+            Galería Universitaria San Francisco de Borja. Torreón, Coahuila.
           </li>
 
           <li class="pl-4 border-l border-texto-300">
-            Al ras del suelo.
+            <em>Al ras del suelo.</em>
             Galería Casa Habitación.
-            Curaduría de Norberto Treviño.
+            Curaduría de Norberto Treviño. Torreón, Coahuila.
           </li>
 
           <li class="pl-4 border-l border-texto-300">
-            Nostalgia de un Futuro Fracasado.
-            Centro de Artes del Norte.
-          </li>
-
-          <li class="pl-4 border-l border-texto-300">
-            Exposición colectiva del grupo de grabado
-            del Centro de Artes del Norte.
+            <em>Nostalgia de un Futuro Fracasado.</em>
+            Centro de Artes del Norte. Torreón, Coahuila.
           </li>
         </ul>
       </div>
@@ -173,7 +178,7 @@ import PageHeader from "../components/Sections/PageHeader.astro";
 
         <ul class="space-y-4 text-lg leading-relaxed text-texto-700">
           <li class="pl-4 border-l border-texto-300">
-            Bancas y paredes.
+            <em>Bancas y paredes</em>.
             Aeropuerto Internacional Francisco Sarabia.
             Torreón, Coahuila.
           </li>
@@ -194,8 +199,8 @@ import PageHeader from "../components/Sections/PageHeader.astro";
 
         <ul class="space-y-4 text-lg leading-relaxed text-texto-700">
           <li class="pl-4 border-l border-texto-300">
-            Programa de Asesorías de Proyectos Culturales.
-            Centro Nacional de las Artes.
+            <em>Programa de Asesorías de Proyectos Culturales</em>.
+            Centro Nacional de las Artes. México.
           </li>
         </ul>
       </div>

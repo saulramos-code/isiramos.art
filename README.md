@@ -1,53 +1,46 @@
-# maucariapacom-church-starter [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
+# isiramos [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
 
-An open-source starter template for building high-performance, content-driven church websites with Astro. Pure SSG, SEO-ready, built with Tailwind CSS, Markdown content, ready to integrate with any CMS
+An artist portfolio website for Isaac Ramos, built with Astro. Pure SSG, SEO-ready, built with Tailwind CSS, Markdown-driven content architecture
 
 ## Demo and Screenshot
 ![Home Page](https://imgs.maucariapa.com/uploads/452546054-84337aa6-eea8-4879-9461-d2e7d3665aee.png)
 
-Demo URL: [https://maucariapacom-church-starter.pages.dev](https://maucariapacom-church-starter.pages.dev/)
+Demo URL: [https://isiramos.art](https://isiramos.art)
 
 ## Features
 
-- **Pure Static Site Generation (SSG)**: Fast, SEO-friendly pages generated at build time
 - **Content-Driven Architecture**: Content managed via Markdown files using Astro Content Collections
 - **Mobile-First Responsive Design**: Tailwind CSS for beautiful, responsive layouts
 - **SEO Optimized**: Complete meta tags, JSON-LD Schema, and sitemap.xml
-- **CMS-Ready Structure**: Easily integrate with headless CMS solutions
-- **Comprehensive Church Website Sections**: All essential pages for a complete church website
 - **Accessibility Focus**: WCAG compliant design and markup
 - **Modern UI Components**: Reusable components with hover states and micro-interactions
-- **Integrated Church Icon**: Custom SVG church icon used throughout the site
 - **Image Optimization**: Proper image organization and fallback handling
 
 ## Project Structure
 
 ```
-maucariapacom-church-starter/
+isiramos/
 ├── public/
-│   ├── uploads/          # Images directories (staff, events, sermons, etc.)
-│   │   ├── staff/        # Staff profile images
-│   │   ├── events/       # Event images
-│   │   ├── sermons/      # Sermon thumbnail images
-│   │   ├── ministries/   # Ministry logo images
-│   │   └── blog/         # Blog post images
-│   ├── favicon.svg
+│   ├── uploads/          # Content images and assets
+│   │   ├── blog/         # Blog post images
+│   │   ├── obras/        # Artwork images
+│   │   ├── proyectos/    # Project images
+│   │   └── publicaciones/ # Publication images
+│   ├── favicon.ico
 │   ├── robots.txt
 │   └── site.webmanifest
 ├── src/
 │   ├── assets/           # Astro-processed assets
 │   ├── components/       # Reusable Astro components
 │   │   ├── Global/       # Header, Footer, Navigation
-│   │   ├── Sections/     # Page sections (Hero, Events, etc.)
+│   │   ├── Sections/     # Page sections
 │   │   └── UI/           # UI components (Button, Card, SEO)
 │   ├── content/          # Astro Content Collections
 │   │   ├── config.ts     # Collection schemas
-│   │   ├── staff/        # Staff member profiles
-│   │   ├── events/       # Church events
-│   │   ├── sermons/      # Sermon content
-│   │   ├── ministries/   # Ministry descriptions
-│   │   ├── blog/         # Blog posts
-│   │   └── siteInfo/     # Site configuration content
+│   │   ├── obras/        # Artwork content
+│   │   ├── publicaciones/ # Publication content
+│   │   ├── proyectos/    # Project content
+│   │   └── blog/         # Blog posts
 │   ├── layouts/          # Page layouts
 │   ├── pages/            # Astro pages
 │   └── utils/            # Utility functions
@@ -67,8 +60,8 @@ maucariapacom-church-starter/
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/MauCariApa-com/maucariapacom-church-starter.git
-   cd maucariapacom-church-starter
+   git clone https://github.com/isiramos/isiramos.git
+   cd isiramos
    ```
 
 2. Install dependencies:
@@ -289,7 +282,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## Bugs / Issues
 
 We appreciate your understanding and encourage you to report any new bugs you find by
-[opening an issue](https://github.com/MauCariApa-com/maucariapacom-church-starter/issues)
+If you have questions or run into issues, please [open an issue](https://github.com/isiramos/isiramos/issues) to get help from the community.
 on our GitHub repository.
 
 ## Acknowledgments

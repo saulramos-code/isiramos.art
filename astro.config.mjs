@@ -2,18 +2,29 @@
 import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
+import partytown from '@astrojs/partytown';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://example.com', // Replace with your site URL
+  site: 'https://isiramos.art',
+  redirects: {
+    '/proyectos/bancas-y-paredes/': '/proyectos/bancas-y-paredes',
+  },
+
   integrations: [
+    partytown(),
     tailwind(),
-    sitemap(),
+    sitemap({
+      filter: (page) =>
+        !page.endsWith('/blog/') &&
+        (!page.includes('/obra-disponible/') || page.endsWith('/obra-disponible/')),
+    }),
   ],
+
   markdown: {
     shikiConfig: {
       theme: 'github-light',
-      wrap: true
-    }
-  }
+      wrap: true,
+    },
+  },
 });

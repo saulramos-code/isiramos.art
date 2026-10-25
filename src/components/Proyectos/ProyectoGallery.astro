@@ -1,0 +1,180 @@
+---
+import { Image } from "astro:assets";
+import { resolveImage } from "../../utils/imageResolver";
+
+export interface Props {
+  images: {
+    image: string;
+    alt: string;
+  }[];
+}
+
+const { images } = Astro.props;
+---
+
+<div
+  class="fixed inset-0 z-50 hidden items-center justify-center bg-black/90"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Galería del proyecto"
+  data-gallery-modal
+  style="touch-action: pan-y;"
+>
+  <div class="relative h-full w-full flex items-center justify-center px-4 md:px-8">
+    <div class="relative w-full max-w-6xl max-h-[85vh] flex items-center justify-center">
+      {images.map((item, index) => (
+        <Image
+          src={resolveImage(item.image)}
+          alt={item.alt}
+          class="block max-h-[85vh] w-auto max-w-full object-contain"
+          widths={[480, 800, 1200, 1600]}
+          sizes="(max-width: 768px) 100vw, 1200px"
+          format="webp"
+          loading="lazy"
+          decoding="async"
+          data-gallery-image
+          data-gallery-index={index}
+          hidden={index !== 0}
+        />
+      ))}
+    </div>
+
+    <div
+      class="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/60 text-xs tracking-[0.2em] font-light"
+      data-gallery-counter
+    >
+      01 / 01
+    </div>
+
+    <button
+      class="absolute top-6 right-6 text-white/70 hover:text-white text-4xl leading-none transition-colors focus:outline-none focus:ring-2 focus:ring-white/50 rounded"
+      aria-label="Cerrar galería"
+      data-gallery-close
+      type="button"
+    >
+      ✕
+    </button>
+
+    <button
+      class="absolute left-4 top-1/2 -translate-y-1/2 text-white/60 hover:text-white text-4xl transition-colors disabled:opacity-20 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-white/50 rounded"
+      aria-label="Imagen anterior"
+      data-gallery-prev
+      type="button"
+    >
+      ‹
+    </button>
+
+    <button
+      class="absolute right-4 top-1/2 -translate-y-1/2 text-white/60 hover:text-white text-4xl transition-colors disabled:opacity-20 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-white/50 rounded"
+      aria-label="Imagen siguiente"
+      data-gallery-next
+      type="button"
+    >
+      ›
+    </button>
+  </div>
+</div>
+
+<script>
+  const modal = document.querySelector<HTMLElement>("[data-gallery-modal]");
+
+  if (modal) {
+    const galleryImages = Array.from(
+      modal.querySelectorAll<HTMLImageElement>("[data-gallery-image]")
+    );
+    const counter = modal.querySelector<HTMLElement>("[data-gallery-counter]");
+    const closeBtn = modal.querySelector<HTMLButtonElement>("[data-gallery-close]");
+    const prevBtn = modal.querySelector<HTMLButtonElement>("[data-gallery-prev]");
+    const nextBtn = modal.querySelector<HTMLButtonElement>("[data-gallery-next]");
+
+    if (galleryImages.length > 0 && counter && closeBtn && prevBtn && nextBtn) {
+      const total = galleryImages.length;
+      let currentIndex = 0;
+
+      function updateImage(index: number) {
+        currentIndex = Math.max(0, Math.min(index, total - 1));
+        galleryImages.forEach((image, imageIndex) => {
+          image.hidden = imageIndex !== currentIndex;
+        });
+        counter!.textContent = `${String(currentIndex + 1).padStart(2, "0")} / ${String(total).padStart(2, "0")}`;
+        prevBtn!.disabled = currentIndex === 0;
+        nextBtn!.disabled = currentIndex === total - 1;
+      }
+
+      function openModal() {
+        if (total === 0) return;
+
+        modal?.classList.remove("hidden");
+        modal?.classList.add("flex");
+        document.body.style.overflow = "hidden";
+        updateImage(0);
+      }
+
+      function closeModal() {
+        modal?.classList.add("hidden");
+        modal?.classList.remove("flex");
+        document.body.style.overflow = "";
+      }
+
+      closeBtn.addEventListener("click", closeModal);
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && !modal?.classList.contains("hidden")) {
+          closeModal();
+        }
+
+        if (event.key === "ArrowLeft" && !modal?.classList.contains("hidden")) {
+          event.preventDefault();
+          updateImage(currentIndex - 1);
+        }
+
+        if (event.key === "ArrowRight" && !modal?.classList.contains("hidden")) {
+          event.preventDefault();
+          updateImage(currentIndex + 1);
+        }
+      });
+
+      prevBtn.addEventListener("click", () => updateImage(currentIndex - 1));
+      nextBtn.addEventListener("click", () => updateImage(currentIndex + 1));
+
+      let startX = 0;
+      let currentX = 0;
+      let isTouching = false;
+
+      modal.addEventListener(
+        "touchstart",
+        (event: TouchEvent) => {
+          startX = event.touches[0].clientX;
+          currentX = startX;
+          isTouching = true;
+        },
+        { passive: true }
+      );
+
+      modal.addEventListener(
+        "touchmove",
+        (event: TouchEvent) => {
+          if (!isTouching) return;
+          currentX = event.touches[0].clientX;
+        },
+        { passive: true }
+      );
+
+      modal.addEventListener("touchend", () => {
+        if (!isTouching) return;
+
+        const diff = currentX - startX;
+
+        if (Math.abs(diff) > 50) {
+          if (diff < 0) updateImage(currentIndex + 1);
+          else updateImage(currentIndex - 1);
+        }
+
+        isTouching = false;
+      });
+
+      (window as any).__openProyectoGallery = openModal;
+      (window as any).__closeProyectoGallery = closeModal;
+    }
+  }
+</script>

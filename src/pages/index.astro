@@ -4,6 +4,7 @@ import HeroSection from "../components/Sections/HeroSection.astro";
 import ObrasList from "../components/Sections/ObrasList.astro";
 import PublicacionesList from "../components/Sections/PublicacionesList.astro";
 import Button from "../components/UI/Button.astro";
+import OptimizedImage from "../components/UI/OptimizedImage.astro";
 ---
 
 <BaseLayout>
@@ -19,10 +20,12 @@ import Button from "../components/UI/Button.astro";
     <div class="container">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
         <div>
-          <img 
+          <OptimizedImage
             src="/uploads/isaac-ramos.webp" 
             alt="isaac-ramos-artista-visual" 
             class="rounded-lg shadow-lg object-cover w-full h-full"
+            loading="lazy"
+            decoding="async"
           />
         </div>
         
@@ -35,9 +38,11 @@ import Button from "../components/UI/Button.astro";
             Ha exhibido su obra en el TYPA Letterpress and Paper Art Centre de Tartú, Estonia; Carnaval L'ours Noir Mont-Louis 2026, en colaboración con Aztrosharper; y en galerías como Galería Universitaria San Francisco de Borja, Galería Casa Habitación, Galería del Centro de Artes del NorteEs parte de la colección de la fanzinoteca del Museo Universitario del Chopo y la Libre.
           </p>
           
-          <Button href="/sobre-mi">
-            Ver CV
-          </Button>
+          <div class="flex justify-center">
+            <Button href="/sobre-mi">
+              Ver Curriculum Vitae
+            </Button>
+          </div>
         </div>
       </div>
     </div>
@@ -46,67 +51,122 @@ import Button from "../components/UI/Button.astro";
 
 
   <!-- Series fotográficas y proyectos artísticos  - Body Work - Cuerpo de Trabajo-->
-  <section class="py-[120px] bg-white" >
-    <div class="container space-y-24">
-      <div class="max-w-5xl mx-auto text-center">
-        <h2 class="text-3xl md:text-4xl font-bold mb-6">Proyectos artísticos</h2>
-        
-        <div class="grid grid-cols-1 md:grid-cols-1 gap-16 mb-8">
-          <div class= "p-0 rounded-lg shadow-sm">
-            <h3 class="text-xl font-bold mb-3">Fotografía contemporánea</h3>
-            <img 
-            src="/uploads/fotografia-contemporanea-isaac-ramos.webp" 
-            alt="fotografia-contemporanea-de-isaac-ramos"
-            class="w-full h-[700px] mt-8 object-cover rounded-md transition duration-700 hover:scale-105"
+ <section class="py-[150px] bg-white">
+  <div class="container">
+    <div class="max-w-7xl mx-auto">
+
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-20">
+        Proyectos artísticos
+      </h2>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-24">
+
+        <!-- Fotografía -->
+        <article class="group">
+
+          <h3 class="text-2xl font-semibold text-center tracking-wide transition-all duration-500 group-hover:tracking-widest">
+            Fotografía contemporánea
+          </h3>
+
+          <div class="w-14 h-px bg-black mx-auto my-6 transition-all duration-500 group-hover:w-20"></div>
+
+          <p class="text-neutral-500 text-center max-w-md mx-auto mb-10 leading-relaxed">
+            Exploraciones sobre el territorio urbano, la memoria y el objeto personal
+            mediante el desapego de objetos.
+          </p>
+
+          <a
+            href="/obras/fotografia-contemporanea"
+            class="block px-6 overflow-hidden rounded-md"
+          >
+            <OptimizedImage
+              src="/uploads/fotografia-contemporanea-isaac-ramos.webp"
+              alt="Fotografía contemporánea de Isaac Ramos"
+              class="
+                w-full
+                h-[560px]
+                object-cover
+                rounded-md
+                transition-all
+                duration-700
+                ease-out
+                group-hover:scale-[1.02]
+                group-hover:shadow-xl
+                group-hover:brightness-95
+              "
+              loading="lazy"
+              decoding="async"
+              widths={[480, 800, 1200]}
+              sizes="(max-width: 768px) 100vw, 50vw"
             />
-            <Button href="/fotografia-contemporanea" variant="outline" class="mt-8 mb-4">
-          Explorar →
+          </a>
+
+          <div class="flex justify-center mt-10">
+            <Button
+              href="/obras/fotografia-contemporanea"
+              variant="outline"
+              class="transition-all duration-300 group-hover:px-7"
+            >
+              Explorar fotografía →
             </Button>
           </div>
-          
-        <div class="grid grid-cols-1 md:grid-cols-1 gap-16 mb-8">  
-          <div class= "p-0 rounded-lg shadow-sm">
-            <h3 class="text-xl font-bold mb-3">Piezas y objetos</h3>
-            <img 
-            src="/uploads/piezas-y-objetos-isaac-ramos.webp" 
-            alt="piezas-y-objetos-isaac-ramos"
-            class="w-full h-[700px] mt-8 object-cover rounded-md transition duration-700 hover:scale-105"
+
+        </article>
+
+        <!-- Objetos -->
+        <article class="group">
+
+          <h3 class="text-2xl font-semibold text-center tracking-wide transition-all duration-500 group-hover:tracking-widest">
+            Piezas y objetos
+          </h3>
+
+          <div class="w-14 h-px bg-black mx-auto my-6 transition-all duration-500 group-hover:w-20"></div>
+
+          <p class="text-neutral-500 text-center max-w-md mx-auto mb-10 leading-relaxed">
+            Objetos, ensamblajes e instalaciones que exploran la relación entre
+            los materiales, el espacio y la experiencia cotidiana.
+          </p>
+
+          <a
+            href="/obras/piezas-y-objetos"
+            class="block px-6 overflow-hidden rounded-md"
+          >
+            <OptimizedImage
+              src="/uploads/piezas-y-objetos-isaac-ramos.webp"
+              alt="Piezas y objetos de Isaac Ramos"
+              class="
+                w-full
+                h-[560px]
+                object-cover
+                rounded-md
+                transition-all
+                duration-700
+                ease-out
+                group-hover:scale-[1.02]
+                group-hover:shadow-xl
+                group-hover:brightness-95
+              "
+              loading="lazy"
+              decoding="async"
+              widths={[480, 800, 1200]}
+              sizes="(max-width: 768px) 100vw, 50vw"
             />
-            <Button href="/piezas-y-objetos" variant="outline" class="mt-8 mb-4">
-          Explorar → 
-             </Button>
+          </a>
+
+          <div class="flex justify-center mt-10">
+            <Button
+              href="/obras/piezas-y-objetos"
+              variant="outline"
+              class="transition-all duration-300 group-hover:px-7"
+            >
+              Explorar piezas →
+            </Button>
           </div>
-          </div>
-        </div>
+
+        </article>
+
       </div>
+
     </div>
-  </section>
-
- 
-
-
-  <!-- Sección de Publicaciones, Obras editadas, fanzines, libros, etc -->
-  <PublicacionesList />
-
-
-  <!-- Call to Action - Newsletter-->
-  <section 
-    class="py-20 bg-cover bg-center text-white"
-    style="background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(/uploads/suscribete-neswletter.webp)"
-  >
-    <div class="container">
-      <div class="max-w-3xl mx-auto text-center">
-        <h2 class="text-3xl md:text-4xl font-bold mb-6 text-white">¿Quieres saber más? ¡Tengo un newsletter!</h2>
-        <p class="text-xl mb-8">
-          Suscríbete al newsletter para recibir actualizaciones sobre proyectos, obras recientes, exposiciones y más procesos relacionados con mi práctica artística.
-        </p>
-        
-        <div class="flex flex-wrap justify-center gap-4">
-          <Button href="/newsletter" variant="primary" size="lg">
-            Suscribirse
-          </Button>
-        </div>
-      </div>
-    </div>
-  </section>
-</BaseLayout>
+  </div>
+</section>

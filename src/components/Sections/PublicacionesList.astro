@@ -13,7 +13,7 @@ const { count = 3, showViewAll = true } = Astro.props;
 
 // Get publicaciones sorted by date (newest first)
 const allPublicaciones = await getCollection("publicaciones", ({ data }) => {
-  return import.meta.env.PROD ? !data.draft : true;
+  return !data.draft;
 });
 
 // Sort by date (newest first)
@@ -27,17 +27,17 @@ const publicaciones = allPublicaciones
     <div class="text-center mb-12">
       <h2 class="text-3xl md:text-4xl font-bold mb-4">Publicaciones</h2>
       <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-        Obras, fanzines, cuentos
+      ----
       </p>
     </div>
     
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {publicaciones.map((publicacion) => (
         <Card
-          class="shadow-none"
+          className="shadow-none"
           title={publicacion.data.title}
           image={{
-            src: publicacion.data.image || "/images/publicacion-placeholder.webp",
+            src: publicacion.data.image || "/uploads/publicaciones-placeholder.webp",
             alt: publicacion.data.title
           }}
           href={`/publicaciones/${publicacion.slug}`}
@@ -53,7 +53,7 @@ const publicaciones = allPublicaciones
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
             </svg>
-            <span>{publicacion.data.speaker}</span>
+            <span>{publicacion.data.autor}</span>
           </div>
           
           {publicacion.data.series && (
@@ -68,7 +68,7 @@ const publicaciones = allPublicaciones
           <p class="text-gray-700 mb-4">{publicacion.data.summary}</p>
 
           <p class="text-primary-600 font-medium group-hover:underline group-hover:text-primary-700">
-            Listen Now →
+            Ver más →
           </p>
           
         </Card>
@@ -77,7 +77,7 @@ const publicaciones = allPublicaciones
 
     {showViewAll && publicaciones.length > 0 && (
       <div class="mt-12 text-center">
-        <Button href="/obra" variant="outline">
+        <Button href="/publicaciones" variant="outline">
           Ver más
         </Button>
       </div>

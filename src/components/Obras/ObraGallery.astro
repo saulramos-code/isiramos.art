@@ -1,0 +1,250 @@
+---
+import OptimizedImage from "../UI/OptimizedImage.astro";
+
+export interface GalleryImage {
+  image: string;
+  alt: string;
+}
+
+export interface Props {
+  images: GalleryImage[];
+  label?: string;
+}
+
+const { images, label = "Imágenes" } = Astro.props;
+---
+
+{
+  images.length > 0 && (
+    <section
+      class="mt-24 w-full"
+      aria-label={label}
+      data-obra-gallery
+    >
+      <!-- Encabezado -->
+      <div class="mb-8 flex items-end justify-between border-b border-gray-200 pb-4">
+        <p class="text-xs uppercase tracking-[0.35em] text-gray-500">
+          {label}
+        </p>
+
+        <p
+          class="text-xs tracking-[0.2em] text-gray-400"
+          aria-live="polite"
+          data-gallery-counter
+        >
+          01 / {String(images.length).padStart(2, "0")}
+        </p>
+      </div>
+
+      <!-- Carrusel -->
+      <div
+        class="relative overflow-hidden"
+        data-gallery-track
+        tabindex="0"
+        style="touch-action: pan-y;"
+        aria-label={`Carrusel de ${label.toLowerCase()}. Usa las flechas izquierda y derecha para navegar.`}
+      >
+        <div
+          class="flex transition-transform duration-300 ease-out"
+          data-gallery-slides
+        >
+          {
+            images.map((item, index) => (
+              <figure
+                class="min-w-full shrink-0"
+                data-gallery-slide
+                data-index={index}
+                aria-hidden={index !== 0 ? "true" : "false"}
+              >
+                <OptimizedImage
+                  src={item.image}
+                  alt={item.alt}
+                  class="block h-auto max-h-[80vh] w-full object-contain"
+                  loading={index === 0 ? "eager" : "lazy"}
+                  decoding="async"
+                  fetchpriority={index === 0 ? "high" : "auto"}
+                  widths={[480, 800, 1200, 1600]}
+                  sizes="(max-width: 768px) 100vw, 1200px"
+                />
+              </figure>
+            ))
+          }
+        </div>
+      </div>
+
+      <!-- Navegación -->
+      <div class="mt-6 flex items-center justify-between border-t border-gray-200 pt-5">
+        <button
+          type="button"
+          data-gallery-prev
+          class="text-xs uppercase tracking-[0.25em] text-gray-500 transition-colors hover:text-gray-900 disabled:cursor-not-allowed disabled:opacity-30"
+          aria-label="Ver imagen anterior"
+        >
+          ← Anterior
+        </button>
+
+        <button
+          type="button"
+          data-gallery-next
+          class="text-xs uppercase tracking-[0.25em] text-gray-500 transition-colors hover:text-gray-900 disabled:cursor-not-allowed disabled:opacity-30"
+          aria-label="Ver imagen siguiente"
+        >
+          Siguiente →
+        </button>
+      </div>
+    </section>
+  )
+}
+
+<script>
+  const galleries =
+    document.querySelectorAll<HTMLElement>("[data-obra-gallery]");
+
+  galleries.forEach((gallery) => {
+    const track =
+      gallery.querySelector<HTMLElement>("[data-gallery-track]");
+
+    const slides =
+      gallery.querySelector<HTMLElement>("[data-gallery-slides]");
+
+    const slideElements =
+      gallery.querySelectorAll<HTMLElement>("[data-gallery-slide]");
+
+    const prevButton =
+      gallery.querySelector<HTMLButtonElement>("[data-gallery-prev]");
+
+    const nextButton =
+      gallery.querySelector<HTMLButtonElement>("[data-gallery-next]");
+
+    const counter =
+      gallery.querySelector<HTMLElement>("[data-gallery-counter]");
+
+    if (
+      !track ||
+      !slides ||
+      !prevButton ||
+      !nextButton ||
+      !counter ||
+      slideElements.length === 0
+    ) {
+      return;
+    }
+
+    let currentIndex = 0;
+
+    let startX = 0;
+    let currentX = 0;
+    let isTouching = false;
+
+    const total = slideElements.length;
+
+    function updateCarousel() {
+      slides!.style.transform =
+        `translateX(-${currentIndex * 100}%)`;
+
+      slideElements.forEach((slide, index) => {
+        slide.setAttribute(
+          "aria-hidden",
+          index === currentIndex ? "false" : "true"
+        );
+      });
+
+      const current = String(currentIndex + 1).padStart(2, "0");
+      const totalFormatted = String(total).padStart(2, "0");
+
+      counter!.textContent = `${current} / ${totalFormatted}`;
+
+      prevButton!.disabled = currentIndex === 0;
+      nextButton!.disabled = currentIndex === total - 1;
+    }
+
+    function goTo(index: number) {
+      currentIndex = Math.max(
+        0,
+        Math.min(index, total - 1)
+      );
+
+      updateCarousel();
+    }
+
+    // -------------------------
+    // Botón anterior
+    // -------------------------
+
+    prevButton.addEventListener("click", () => {
+      goTo(currentIndex - 1);
+    });
+
+    // -------------------------
+    // Botón siguiente
+    // -------------------------
+
+    nextButton.addEventListener("click", () => {
+      goTo(currentIndex + 1);
+    });
+
+    // -------------------------
+    // Navegación por teclado
+    // -------------------------
+
+    track.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        goTo(currentIndex - 1);
+      }
+
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+        goTo(currentIndex + 1);
+      }
+    });
+
+    // -------------------------
+    // Swipe en móvil
+    // -------------------------
+
+    track.addEventListener(
+      "touchstart",
+      (event) => {
+        startX = event.touches[0].clientX;
+        currentX = startX;
+        isTouching = true;
+      },
+      { passive: true }
+    );
+
+    track.addEventListener(
+      "touchmove",
+      (event) => {
+        if (!isTouching) return;
+
+        currentX = event.touches[0].clientX;
+      },
+      { passive: true }
+    );
+
+    track.addEventListener("touchend", () => {
+      if (!isTouching) return;
+
+      const distance = currentX - startX;
+
+      const threshold = 50;
+
+      if (Math.abs(distance) > threshold) {
+        if (distance < 0) {
+          goTo(currentIndex + 1);
+        } else {
+          goTo(currentIndex - 1);
+        }
+      }
+
+      isTouching = false;
+    });
+
+    // -------------------------
+    // Inicialización
+    // -------------------------
+
+    updateCarousel();
+  });
+</script>

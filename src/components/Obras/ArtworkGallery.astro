@@ -1,0 +1,73 @@
+---
+export interface Props {
+
+    cover:string;
+
+    gallery?:string[];
+
+}
+
+const {
+
+    cover,
+
+    gallery=[]
+
+}=Astro.props;
+
+const images=[cover,...gallery];
+---
+
+<div class="space-y-5">
+
+    <div>
+
+        <img
+
+            id="mainArtwork"
+
+            src={cover}
+
+            class="w-full object-cover rounded-sm"
+
+        />
+
+    </div>
+
+    {
+        images.length>1 && (
+
+        <div class="flex gap-3 overflow-x-auto pb-2">
+
+            {
+
+                images.map(image=>(
+
+                <button
+
+                    class="group shrink-0"
+
+                    onclick={`document.getElementById('mainArtwork').src='${image}'`}
+
+                >
+
+                    <img
+
+                        src={image}
+
+                        class="w-24 h-24 object-cover opacity-80 transition duration-300 group-hover:opacity-100"
+
+                    />
+
+                </button>
+
+                ))
+
+            }
+
+        </div>
+
+        )
+    }
+
+</div>

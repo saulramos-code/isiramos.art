@@ -1,4 +1,7 @@
 ---
+import { getImage } from "astro:assets";
+import { resolveImage } from "../../utils/imageResolver";
+
 export interface Props {
   title: string;
   description: string;
@@ -8,6 +11,14 @@ export interface Props {
   };
   type?: "website" | "article";
   canonicalUrl?: string;
+  author?: string;
+
+  robots?: string;
+
+  artwork?: {
+    name: string;
+    year?: string | number;
+  };
 }
 
 const {
@@ -15,97 +26,195 @@ const {
   description,
   image = {
     url: "/uploads/social-share.webp",
-    alt: "Isaac Ramos | Artista visual"
+    alt: "Isaac Ramos | Artista visual",
   },
   type = "website",
   canonicalUrl,
+  author = "Isaac Ramos",
+  robots = "index, follow",
+  artwork,
 } = Astro.props;
 
-// Get the canonical URL
-const canonicalURL = canonicalUrl || new URL(Astro.url.pathname, Astro.site);
+/*
+ * Canonical URL
+ * If a canonical URL is provided, use it.
+ * Otherwise, generate it from the current pathname.
+ */
+const canonicalURL = canonicalUrl
+  ? new URL(canonicalUrl, Astro.site)
+  : new URL(Astro.url.pathname, Astro.site);
 
-// Get Church address and contact info (would come from site config in a real implementation)
-const churchInfo = {
-  name: "Church Name",
-  address: {
-    streetAddress: "Checar",
-    addressLocality: "Checar",
-    addressRegion: "Torreón, Coahuila",
-    postalCode: "27000",
-    addressCountry: "México",
-  },
-  telephone: "+52 871 266 5096",
-  email: "contacto@isidm.com",
-  url: Astro.site?.toString() || "https://example.com",
-};
+/*
+ * Absolute image URL for Open Graph / Twitter.
+ */
+const socialImage = await getImage({
+  src: resolveImage(image.url),
+  width: 1200,
+  format: "webp",
+});
+const imageURL = new URL(socialImage.src, Astro.site).toString();
+
+const toJsonLd = (schema: Record<string, unknown>) =>
+  JSON.stringify(schema).replace(/[<>&\u2028\u2029]/g, (character) =>
+    `\\u${character.charCodeAt(0).toString(16).padStart(4, "0")}`
+  );
 ---
 
-<!-- Basic SEO -->
-<title>{title}</title>
-<meta name="description" content={description} />
-<link rel="canonical" href={canonicalURL} />
+<meta name="publisher" content="Isaac Ramos" />
 
-<!-- Open Graph / Facebook -->
+<!-- =====================================================
+     BASIC SEO
+====================================================== -->
+
+<title>{title}</title>
+
+<meta
+  name="description"
+  content={description}
+/>
+
+<meta
+  name="robots"
+  content={robots}
+/>
+
+<meta
+  name="author"
+  content={author}
+/>
+
+<link
+  rel="canonical"
+  href={canonicalURL}
+/>
+
+
+<!-- =====================================================
+     OPEN GRAPH / FACEBOOK
+====================================================== -->
+
 <meta property="og:type" content={type} />
 <meta property="og:url" content={canonicalURL} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={new URL(image.url, Astro.site)} />
-<meta property="og:image:alt" content={image.alt} />
 
-<!-- Twitter -->
-<meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content={canonicalURL} />
-<meta property="twitter:title" content={title} />
-<meta property="twitter:description" content={description} />
-<meta property="twitter:image" content={new URL(image.url, Astro.site)} />
-<meta property="twitter:image:alt" content={image.alt} />
+<meta
+  property="og:image"
+  content={imageURL}
+/>
 
-<!-- JSON-LD Schema for Church -->
-<script type="application/ld+json">
-  {
+<meta
+  property="og:image:alt"
+  content={image.alt}
+/>
+
+
+<!-- =====================================================
+     TWITTER / X
+====================================================== -->
+
+<meta
+  name="twitter:card"
+  content="summary_large_image"
+/>
+
+<meta
+  name="twitter:url"
+  content={canonicalURL}
+/>
+
+<meta
+  name="twitter:title"
+  content={title}
+/>
+
+<meta
+  name="twitter:description"
+  content={description}
+/>
+
+<meta
+  name="twitter:image"
+  content={imageURL}
+/>
+
+<meta
+  name="twitter:image:alt"
+  content={image.alt}
+/>
+
+
+<!-- =====================================================
+     PERSON SCHEMA
+====================================================== -->
+
+<script
+  type="application/ld+json"
+  set:html={toJsonLd({
     "@context": "https://schema.org",
     "@type": "Person",
     "name": "Isaac Ramos",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "${churchInfo.address.streetAddress}",
-      "addressLocality": "${churchInfo.address.addressLocality}",
-      "addressRegion": "${churchInfo.address.addressRegion}",
-      "postalCode": "${churchInfo.address.postalCode}",
-      "addressCountry": "${churchInfo.address.addressCountry}"
-    },
-    "job title": "Artista visual"
-    "telephone": "${churchInfo.telephone}",
-    "email": "${churchInfo.email}",
-    "description": "Fotógrafo, artista visual y editor independiente."
-    "url": "${churchInfo.url}"
-  }
-</script>
+    "jobTitle": "Artista visual y fotógrafo",
+    "email": "contacto@isiramos.art",
+    "url": "https://isiramos.art"
+  })}
+/>
+
+<!-- =====================================================
+     VISUAL ARTWORK SCHEMA
+====================================================== -->
+
+{artwork && (
+  <script
+    type="application/ld+json"
+    set:html={toJsonLd({
+      "@context": "https://schema.org",
+      "@type": "VisualArtwork",
+      "name": artwork.name,
+      "description": description,
+      "image": imageURL,
+      "url": canonicalURL.toString(),
+      "creator": {
+        "@type": "Person",
+        "name": author,
+        "url": "https://isiramos.art"
+      },
+      ...(artwork.year && {
+        "dateCreated": String(artwork.year)
+      }),
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": canonicalURL.toString()
+      }
+    })}
+  />
+)}
+
+
+<!-- =====================================================
+     ARTICLE SCHEMA
+====================================================== -->
 
 {
-  type === "article" && (
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "Article",
-        "headline": "${title}",
-        "image": "${new URL(image.url, Astro.site)}",
-        "description": "${description}",
-        "publisher": {
-          "@type": "Organization",
-          "name": "${churchInfo.name}",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "${new URL("/uploads/logo.png", Astro.site)}"
-          }
-        },
-        "url": "${canonicalURL}",
-        "mainEntityOfPage": {
-          "@type": "WebPage",
-          "@id": "${canonicalURL}"
-        }
+ type === "article" && !artwork && (
+  <script
+    type="application/ld+json"
+    set:html={toJsonLd({
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": title,
+      "description": description,
+      "image": imageURL,
+      "author": {
+        "@type": "Person",
+        "name": author,
+        "url": "https://isiramos.art"
+      },
+      "url": canonicalURL.toString(),
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": canonicalURL.toString()
       }
-    </script>
-  )
-}
+    })}
+  />
+)}
