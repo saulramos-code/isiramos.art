@@ -1,0 +1,102 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHeader from "../../components/Sections/PageHeader.astro";
+import Button from "../../components/UI/Button.astro";
+
+const toJsonLd = (schema: Record<string, unknown>) =>
+  JSON.stringify(schema).replace(/[<>&\u2028\u2029]/g, (character) =>
+    `\\u${character.charCodeAt(0).toString(16).padStart(4, "0")}`
+  );
+
+const serviceSchema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: "Edición de video y postproducción",
+  serviceType: "Edición de video, montaje, color grading y postproducción visual",
+  description:
+    "Edición de video profesional para creadores de contenido, marcas de skincare y bienestar y proyectos visuales con un enfoque editorial y artístico.",
+  url: "https://isiramos.art/servicios/edicion-video/",
+  provider: {
+    "@type": "Person",
+    name: "Isaac Ramos",
+    url: "https://isiramos.art",
+  },
+  areaServed: "MX",
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Servicios de edición",
+    itemListElement: [
+      "Montaje editorial y narrativo",
+      "Color grading y ajustes de imagen",
+      "Adaptación para redes sociales y campañas",
+      "Entrega con versión final preparada para publicación",
+    ].map((item) => ({
+      "@type": "Offer",
+      itemOffered: {
+        "@type": "Service",
+        name: item,
+      },
+    })),
+  },
+};
+---
+
+<BaseLayout
+  title="Edición de Video y Postproducción | Isaac Ramos"
+  description="Edición de video profesional para creadores de contenido y marcas de skincare y bienestar. Postproducción con color grading y ritmo visual de autor."
+  canonicalUrl="https://isiramos.art/servicios/edicion-video/"
+>
+  <PageHeader
+    title="Edición de video"
+    subtitle="Montaje, color y ritmo visual para proyectos con intención editorial y presencia en pantalla."
+  />
+
+  <section class="container mx-auto max-w-5xl px-4 py-16 md:py-20">
+    <div class="grid gap-10 lg:grid-cols-[1.4fr_0.8fr] lg:items-start">
+      <article class="prose prose-lg max-w-none text-gray-700">
+        <p>
+          Diseñamos videos que no solo se ven bien, sino que comunican con claridad y
+          carácter. La edición se convierte en una herramienta para ordenar la idea,
+          sostener el ritmo y dejar una imagen precisa, emocional y reconocible.
+        </p>
+
+        <p>
+          Trabajo con contenido para marcas de bienestar, skincare, artistas y creadores de
+          contenido que necesitan una pieza con un punto de vista propio. El objetivo es
+          transformar material bruto en una narrativa visual coherente, elegante y efectiva.
+        </p>
+
+        <h2>Enfoque de trabajo</h2>
+
+        <ul>
+          <li>Montaje narrativo y editorial con claridad de intención.</li>
+          <li>Color grading y ajuste tonal para una imagen más pulida.</li>
+          <li>Ritmo visual pensado para redes, campañas y presentaciones.</li>
+          <li>Entrega lista para publicar con atención a la identidad visual.</li>
+        </ul>
+
+        <p>
+          Si tu proyecto requiere una pieza más cercana a una mirada de autor que a una
+          simple secuencia de clips, esta es una buena vía para desarrollarlo.
+        </p>
+      </article>
+
+      <aside class="rounded-2xl border border-black/10 bg-stone-50 p-6 shadow-sm">
+        <h2 class="text-xl font-medium text-black">Qué incluye</h2>
+        <ul class="mt-5 space-y-3 text-sm leading-relaxed text-gray-700">
+          <li>• Revisión del material y estructura narrativa.</li>
+          <li>• Montaje con ritmo, transiciones y atención a la duración.</li>
+          <li>• Corrección de color y pulido visual.</li>
+          <li>• Adaptación para Instagram, web o presentaciones.</li>
+        </ul>
+      </aside>
+    </div>
+
+    <div class="mt-12 flex flex-col gap-3 sm:flex-row">
+      <Button href="/contacto">Solicitar cotización</Button>
+      <Button href="/contacto" variant="outline">Hablemos de tu proyecto</Button>
+    </div>
+  </section>
+
+  <script type="application/ld+json" set:html={toJsonLd(serviceSchema)} />
+</BaseLayout>

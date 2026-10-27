@@ -1,0 +1,60 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHeader from "../../components/Sections/PageHeader.astro";
+
+const services = [
+  {
+    title: "Edición de Video",
+    description: "Postproducción y color grading para marcas y creadores de contenido.",
+    href: "/servicios/edicion-video/",
+  },
+  {
+    title: "Fotografía de Producto",
+    description: "Fotografía editorial de producto para marcas de skincare, salud y bienestar.",
+    href: "/servicios/fotografia-producto/",
+  },
+  {
+    title: "Retoque Fotográfico",
+    description: "Postproducción y retoque de alta gama para fotógrafos y estudios.",
+    href: "/servicios/retoque-fotografico/",
+  },
+];
+---
+
+<BaseLayout
+  title="Servicios de Producción Visual | Isaac Ramos"
+  description="Servicios de edición de video, fotografía de producto y retoque fotográfico para marcas y creadores de contenido."
+  canonicalUrl="https://isiramos.art/servicios/"
+>
+  <PageHeader title="Servicios de Producción Visual" />
+
+  <section class="container mx-auto max-w-4xl px-4 pb-20 md:pb-24">
+    <p class="mx-auto mb-12 max-w-3xl text-lg leading-relaxed text-gray-700 md:text-xl">
+      Además de mi práctica artística, ofrezco servicios especializados de postproducción y
+      fotografía comercial, aplicando una dirección de arte cuidada y una mirada editorial a
+      los proyectos de marcas y creadores.
+    </p>
+
+    <ul class="divide-y divide-black/15 border-y border-black/15">
+      {services.map((service) => (
+        <li class="py-7 md:py-9">
+          <article class="flex flex-col justify-between gap-4 sm:flex-row sm:items-center sm:gap-8">
+            <div>
+              <h2 class="font-serif text-2xl text-gray-900 md:text-3xl">{service.title}</h2>
+              <p class="mt-2 max-w-2xl leading-relaxed text-gray-600">
+                {service.description}
+              </p>
+            </div>
+            <a
+              href={service.href}
+              aria-label={`Ver detalles: ${service.title}`}
+              class="inline-flex shrink-0 items-center gap-2 text-sm font-medium text-gray-900 underline decoration-black/30 underline-offset-4 transition hover:decoration-black focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-4"
+            >
+              Ver detalles <span aria-hidden="true">→</span>
+            </a>
+          </article>
+        </li>
+      ))}
+    </ul>
+  </section>
+</BaseLayout>

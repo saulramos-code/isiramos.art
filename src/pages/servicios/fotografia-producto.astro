@@ -1,0 +1,119 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHeader from "../../components/Sections/PageHeader.astro";
+import Button from "../../components/UI/Button.astro";
+
+const toJsonLd = (schema: Record<string, unknown>) =>
+  JSON.stringify(schema).replace(/[<>&\u2028\u2029]/g, (character) =>
+    `\\u${character.charCodeAt(0).toString(16).padStart(4, "0")}`
+  );
+
+const serviceSchema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: "Fotografía de Producto para Skincare y Marcas",
+  serviceType: "Fotografía editorial de producto",
+  description:
+    "Fotografía editorial de productos para marcas de skincare, salud y bienestar. Imágenes que transmiten textura, limpieza y calidad premium.",
+  url: "https://isiramos.art/servicios/fotografia-producto/",
+  provider: {
+    "@type": "Person",
+    name: "Isaac Ramos",
+    url: "https://isiramos.art",
+  },
+  areaServed: "MX",
+};
+---
+
+<BaseLayout
+  title="Fotografía de Producto para Skincare y Marcas | Isaac Ramos"
+  description="Fotografía editorial de productos para marcas de skincare, salud y bienestar. Imágenes que transmiten textura, limpieza y calidad premium."
+  canonicalUrl="https://isiramos.art/servicios/fotografia-producto/"
+>
+  <PageHeader
+    title="Fotografía de producto con mirada editorial"
+  />
+
+  <section class="container mx-auto max-w-3xl px-4 py-16 md:py-20">
+    <article class="prose prose-lg max-w-none text-gray-700">
+      <p>
+        Vender por internet no es solo mostrar un objeto. Las fotos de catálogo genéricas no
+        comunican el valor real de una marca de skincare o un producto de bienestar.
+      </p>
+
+      <p>
+        Mi enfoque como fotógrafo y artista visual es tratar tu producto como una pieza de
+        editorial. No solo ilumino el frasco; construyo una imagen que transmite la textura,
+        la frescura y la promesa de calidad de tu marca.
+      </p>
+    </article>
+
+    <div class="mt-8">
+      <Button href="/contacto">Solicitar cotización de fotografía</Button>
+    </div>
+
+    <div class="prose prose-lg mt-16 max-w-none text-gray-700">
+      <h2>¿Para quién es este servicio?</h2>
+      <ul>
+        <li>
+          <strong>Marcas de Skincare y Bienestar:</strong> Que necesitan que sus texturas
+          (cremas, sérums, aceites) se vean reales, limpias y atractivas.
+        </li>
+        <li>
+          <strong>Emprendedores y E-commerce:</strong> Que venden productos físicos y necesitan
+          fotos que eleven el valor percibido de su tienda en línea.
+        </li>
+        <li>
+          <strong>Agencias o marcas:</strong> Que buscan una estética "lifestyle" en lugar del
+          clásico fondo blanco de catálogo.
+        </li>
+      </ul>
+
+      <h2>Mi Proceso de Trabajo</h2>
+      <ol>
+        <li>
+          <strong>Dirección de Arte:</strong> Hablamos sobre los valores de tu marca. ¿Es
+          minimalista? ¿Es orgánica? Definimos paleta de colores, fondos y props.
+        </li>
+        <li>
+          <strong>Sesión en Estudio:</strong> Iluminación controlada para resaltar las texturas
+          de tu producto.
+        </li>
+        <li>
+          <strong>Retoque y Entrega:</strong> Postproducción profesional y entrega de archivos
+          en alta resolución listos para tu web o redes sociales.
+        </li>
+      </ol>
+    </div>
+
+    <div class="mt-8">
+      <Button href="/contacto" variant="outline">
+        Agendar una sesión para mi marca
+      </Button>
+    </div>
+
+    <div class="prose prose-lg mt-16 max-w-none text-gray-700">
+      <h2>Preguntas Frecuentes</h2>
+
+      <h3>¿Cuánto cuesta una sesión de fotografía de producto?</h3>
+      <p>
+        Depende de la cantidad de productos y la complejidad del set. Un paquete básico para
+        redes sociales incluye X productos. Para catálogos grandes, hago cotización por volumen.
+      </p>
+
+      <h3>¿Puedo enviarte mis productos si no estoy en tu ciudad?</h3>
+      <p>
+        Sí, trabajo con envíos a nivel nacional. Coordinamos el envío de tus productos al
+        estudio, realizo la sesión y te los devuelvo junto con las fotos finales.
+      </p>
+
+      <h3>¿Necesito llevar un estilista o props?</h3>
+      <p>
+        Puedo encargarme de la dirección de arte y aportar props básicos para mantener una
+        estética coherente. Si tu marca requiere algo muy específico, lo platicamos.
+      </p>
+    </div>
+  </section>
+
+  <script type="application/ld+json" set:html={toJsonLd(serviceSchema)} />
+</BaseLayout>

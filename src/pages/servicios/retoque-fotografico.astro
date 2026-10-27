@@ -1,0 +1,132 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHeader from "../../components/Sections/PageHeader.astro";
+import Button from "../../components/UI/Button.astro";
+
+const toJsonLd = (schema: Record<string, unknown>) =>
+  JSON.stringify(schema).replace(/[<>&\u2028\u2029]/g, (character) =>
+    `\\u${character.charCodeAt(0).toString(16).padStart(4, "0")}`
+  );
+
+const serviceSchema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: "Retoque Fotográfico y Postproducción para Fotógrafos",
+  serviceType: "Retoque fotográfico y postproducción",
+  description:
+    "Servicio de postproducción y retoque fotográfico de alta gama para fotógrafos que necesitan delegar la edición. Color grading y limpieza de imagen profesional.",
+  url: "https://isiramos.art/servicios/retoque-fotografico/",
+  provider: {
+    "@type": "Person",
+    name: "Isaac Ramos",
+    url: "https://isiramos.art",
+  },
+  areaServed: "MX",
+};
+---
+
+<BaseLayout
+  title="Retoque Fotográfico y Postproducción para Fotógrafos | Isaac Ramos"
+  description="Servicio de postproducción y retoque fotográfico de alta gama para fotógrafos que necesitan delegar la edición. Color grading y limpieza de imagen profesional."
+  canonicalUrl="https://isiramos.art/servicios/retoque-fotografico/"
+>
+  <PageHeader
+    title="Retoque fotográfico y postproducción para fotógrafos"
+  />
+
+  <section class="container mx-auto max-w-3xl px-4 py-16 md:py-20">
+    <article class="prose prose-lg max-w-none text-gray-700">
+      <p>
+        Después de una sesión, llega la parte que muchos fotógrafos preferirían evitar: horas
+        frente a la pantalla seleccionando, corrigiendo color y limpiando cada detalle. El
+        retoque es agotador, consume tu tiempo y te aleja de lo que realmente amas: estar detrás
+        de la cámara.
+      </p>
+
+      <p>
+        Mi servicio es ser tu socio invisible. Delego esa carga técnica con el mismo ojo
+        artístico con el que trato mis propias obras. Tú te quedas con el crédito; yo me aseguro
+        de que tus imágenes tengan la calidad de una publicación editorial.
+      </p>
+    </article>
+
+    <div class="mt-8">
+      <Button href="/contacto">Delegar mi postproducción</Button>
+    </div>
+
+    <div class="prose prose-lg mt-16 max-w-none text-gray-700">
+      <h2>¿Para quién es este servicio?</h2>
+      <ul>
+        <li>
+          <strong>Fotógrafos de Bodas y Eventos:</strong> Que manejan miles de archivos por
+          sesión y necesitan entregar una galería perfecta y a tiempo.
+        </li>
+        <li>
+          <strong>Fotógrafos de Retrato y Moda:</strong> Que buscan un retoque de piel avanzado
+          (frecuencia de separación) y un color grading muy específico para su estilo.
+        </li>
+        <li>
+          <strong>Estudios de Fotografía:</strong> Que tienen picos de trabajo y necesitan un
+          freelancer confiable para sacar los proyectos adelante sin contratar a alguien de
+          planta.
+        </li>
+      </ul>
+
+      <h2>Mi Proceso de Trabajo</h2>
+      <ol>
+        <li>
+          <strong>Recepción y Briefing:</strong> Me envías los archivos (RAW, TIFF o JPEG) y me
+          indicas tu estilo o referencias. Si ya tienes un perfil de color, lo respeto al 100%.
+        </li>
+        <li>
+          <strong>Selección y Color (Culling y Grading):</strong> Selecciono las mejores tomas,
+          unifico la temperatura de color y aplico el look que tu marca o sesión requieran.
+        </li>
+        <li>
+          <strong>Retoque de Alta Gama:</strong> Limpieza de piel, eliminación de imperfecciones,
+          ajuste de luces y sombras.
+        </li>
+        <li>
+          <strong>Entrega:</strong> Recibes las imágenes en el formato solicitado, listas para
+          entregar a tu cliente.
+        </li>
+      </ol>
+    </div>
+
+    <div class="mt-8">
+      <Button href="/contacto" variant="outline">Solicitar pruebas de retoque</Button>
+    </div>
+
+    <div class="prose prose-lg mt-16 max-w-none text-gray-700">
+      <h2>Preguntas Frecuentes</h2>
+
+      <h3>¿Cuánto cuesta el retoque por fotografía?</h3>
+      <p>
+        Depende del nivel de retoque. Un retoque básico de color y contraste tiene una tarifa,
+        mientras que el retoque avanzado de piel o belleza (high-end) se cotiza por separado.
+        Ofrezco paquetes por volumen para fotógrafos que necesitan delegar sesiones completas.
+      </p>
+
+      <h3>¿En qué formato debo enviarte los archivos?</h3>
+      <p>
+        Lo ideal es RAW (CR2, NEF, ARW, etc.) para tener el máximo control sobre el color y la
+        recuperación de información en sombras y luces. Si solo tienes JPEG, también podemos
+        trabajar.
+      </p>
+
+      <h3>¿Cómo transferimos los archivos?</h3>
+      <p>
+        Trabajo con servidores en la nube (Google Drive, Dropbox o WeTransfer) y plataformas
+        como Pixieset o Pic-Time. Tú solo me compartes el enlace de descarga.
+      </p>
+
+      <h3>¿Cuál es el tiempo de entrega?</h3>
+      <p>
+        Para sesiones estándar, entrego en un plazo de 3 a 5 días hábiles. Para bodas o eventos
+        grandes, coordinamos un calendario con entregas parciales.
+      </p>
+    </div>
+  </section>
+
+  <script type="application/ld+json" set:html={toJsonLd(serviceSchema)} />
+</BaseLayout>
