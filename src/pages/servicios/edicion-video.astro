@@ -11,10 +11,10 @@ const toJsonLd = (schema: Record<string, unknown>) =>
 const serviceSchema = {
   "@context": "https://schema.org",
   "@type": "Service",
-  name: "Edición de video y postproducción",
-  serviceType: "Edición de video, montaje, color grading y postproducción visual",
+  name: "Edición de video para profesionales de la belleza",
+  serviceType: "Edición de video y postproducción para profesionales de la belleza",
   description:
-    "Edición de video profesional para creadores de contenido, marcas de skincare y bienestar y proyectos visuales con un enfoque editorial y artístico.",
+    "Edición de video y postproducción para lashistas, barberos, maquillistas y salones. Destaca tu trabajo con un ritmo visual premium y color grading profesional.",
   url: "https://isiramos.art/servicios/edicion-video/",
   provider: {
     "@type": "Person",
@@ -24,12 +24,12 @@ const serviceSchema = {
   areaServed: "MX",
   hasOfferCatalog: {
     "@type": "OfferCatalog",
-    name: "Servicios de edición",
+    name: "Edición de video para belleza",
     itemListElement: [
-      "Montaje editorial y narrativo",
-      "Color grading y ajustes de imagen",
-      "Adaptación para redes sociales y campañas",
-      "Entrega con versión final preparada para publicación",
+      "Edición de videos para Reels y TikTok",
+      "Montaje de transformaciones y antes y después",
+      "Color grading para piel, cabello y producto",
+      "Paquetes mensuales de contenido para redes sociales",
     ].map((item) => ({
       "@type": "Offer",
       itemOffered: {
@@ -42,59 +42,100 @@ const serviceSchema = {
 ---
 
 <BaseLayout
-  title="Edición de Video y Postproducción | Isaac Ramos"
-  description="Edición de video profesional para creadores de contenido y marcas de skincare y bienestar. Postproducción con color grading y ritmo visual de autor."
+  title="Edición de video para profesionales de la belleza | Isaac Ramos"
+  description="Edición de video y postproducción para lashistas, barberos, maquillistas y salones. Destaca tu trabajo con un ritmo visual premium y color grading profesional."
   canonicalUrl="https://isiramos.art/servicios/edicion-video/"
 >
-  <PageHeader
-    title="Edición de video"
-    subtitle="Montaje, color y ritmo visual para proyectos con intención editorial y presencia en pantalla."
-  />
+  <PageHeader title="Edición de video para profesionales de la belleza" />
 
-  <section class="container mx-auto max-w-5xl px-4 py-16 md:py-20">
-    <div class="grid gap-10 lg:grid-cols-[1.4fr_0.8fr] lg:items-start">
-      <article class="prose prose-lg max-w-none text-gray-700">
-        <p>
-          Diseñamos videos que no solo se ven bien, sino que comunican con claridad y
-          carácter. La edición se convierte en una herramienta para ordenar la idea,
-          sostener el ritmo y dejar una imagen precisa, emocional y reconocible.
-        </p>
+  <section class="container mx-auto max-w-3xl px-4 py-16 md:py-20">
+    <article class="prose prose-lg max-w-none text-gray-700">
+      <p>
+        En la industria de la belleza, tu trabajo habla por sí solo, pero
+        <strong>la forma en que lo muestras en redes sociales define cuántos clientes llegan a tu silla</strong>.
+        Un video mal editado, con un audio saturado o un color que no resalta las texturas de
+        tu trabajo, puede hacer que pierdas reservas.
+      </p>
 
-        <p>
-          Trabajo con contenido para marcas de bienestar, skincare, artistas y creadores de
-          contenido que necesitan una pieza con un punto de vista propio. El objetivo es
-          transformar material bruto en una narrativa visual coherente, elegante y efectiva.
-        </p>
+      <p>
+        No hago ediciones genéricas. Entiendo cómo se ve un "antes y después" impactante,
+        cómo debe iluminarse una manicura o cómo resaltar la precisión de un corte de barbería.
+        Mi trabajo es tomar tu material en bruto y darle el pulso, la estética y el ritmo que tu
+        marca necesita para destacar en Instagram y TikTok.
+      </p>
+    </article>
 
-        <h2>Enfoque de trabajo</h2>
-
-        <ul>
-          <li>Montaje narrativo y editorial con claridad de intención.</li>
-          <li>Color grading y ajuste tonal para una imagen más pulida.</li>
-          <li>Ritmo visual pensado para redes, campañas y presentaciones.</li>
-          <li>Entrega lista para publicar con atención a la identidad visual.</li>
-        </ul>
-
-        <p>
-          Si tu proyecto requiere una pieza más cercana a una mirada de autor que a una
-          simple secuencia de clips, esta es una buena vía para desarrollarlo.
-        </p>
-      </article>
-
-      <aside class="rounded-2xl border border-black/10 bg-stone-50 p-6 shadow-sm">
-        <h2 class="text-xl font-medium text-black">Qué incluye</h2>
-        <ul class="mt-5 space-y-3 text-sm leading-relaxed text-gray-700">
-          <li>• Revisión del material y estructura narrativa.</li>
-          <li>• Montaje con ritmo, transiciones y atención a la duración.</li>
-          <li>• Corrección de color y pulido visual.</li>
-          <li>• Adaptación para Instagram, web o presentaciones.</li>
-        </ul>
-      </aside>
+    <div class="mt-8">
+      <Button href="/contacto">Solicitar cotización para mi marca</Button>
     </div>
 
-    <div class="mt-12 flex flex-col gap-3 sm:flex-row">
-      <Button href="/contacto">Solicitar cotización</Button>
+    <div class="prose prose-lg mt-16 max-w-none text-gray-700">
+      <h2>¿Para quién es este servicio?</h2>
+      <ul>
+        <li>
+          <strong>Lashistas y Manicuristas:</strong> Que necesitan mostrar detalles milimétricos,
+          texturas y el proceso de su trabajo de forma estética y atractiva.
+        </li>
+        <li>
+          <strong>Maquillistas y Barberos:</strong> Que buscan destacar transformaciones (antes y
+          después) y el ambiente de su salón o estudio con un ritmo visual dinámico.
+        </li>
+        <li>
+          <strong>Clínicas de estética y Skincare:</strong> Que necesitan transmitir frescura,
+          limpieza, profesionalismo y confianza a través de sus videos.
+        </li>
+      </ul>
+
+      <h2>Mi Proceso de Trabajo</h2>
+      <ol>
+        <li>
+          <strong>Briefing y Dirección:</strong> Me envías tu material y definimos el estilo.
+          ¿Buscas un tono relajante y de lujo? ¿O algo rápido y vibrante para TikTok?
+        </li>
+        <li>
+          <strong>Montaje y Color Grading:</strong> Corto y ajusto el ritmo. Aplico etalonaje
+          (color) para unificar la imagen y resaltar la piel, el cabello o el producto.
+        </li>
+        <li>
+          <strong>Entrega:</strong> Recibes el video en el formato correcto para Reels o TikTok,
+          listo para publicar y atraer clientes.
+        </li>
+      </ol>
+    </div>
+
+    <div class="mt-8">
       <Button href="/contacto" variant="outline">Hablemos de tu proyecto</Button>
+    </div>
+
+    <div class="prose prose-lg mt-16 max-w-none text-gray-700">
+      <h2>Preguntas Frecuentes</h2>
+
+      <h3>¿Cuánto cuesta editar un video para redes sociales?</h3>
+      <p>
+        Depende de la duración y la complejidad. Ofrezco <strong>paquetes mensuales</strong>
+        para profesionales de la belleza que necesitan un flujo constante de contenido (ej. 8,
+        12 o 20 videos al mes), lo cual reduce el costo por video y garantiza que siempre tengas
+        material fresco para publicar.
+      </p>
+
+      <h3>¿Qué necesitas para empezar?</h3>
+      <p>
+        Solo necesito tu material original (los clips en bruto de tu celular o cámara), la
+        música que quieras usar (o yo te sugiero una tendencia) y una idea general de lo que
+        quieres comunicar. Yo me encargo del resto.
+      </p>
+
+      <h3>¿Haces correcciones?</h3>
+      <p>
+        Sí. Incluyo una ronda de revisión en cada proyecto para asegurar que el resultado final
+        sea exactamente lo que necesitas.
+      </p>
+
+      <h3>¿Trabajas con marcas fuera de México?</h3>
+      <p>
+        Sí, trabajo de forma remota. La postproducción es 100% digital, así que puedo colaborar
+        con profesionales de cualquier parte del mundo.
+      </p>
     </div>
   </section>
 
