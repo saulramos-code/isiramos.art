@@ -29,12 +29,10 @@ const getPageImages = (pathname) => {
 export default defineConfig({
   site: 'https://isiramos.art',
   redirects: {
-    '/proyectos/bancas-y-paredes/': '/proyectos/bancas-y-paredes-2026/',
     '/proyectos/bancas-y-paredes': '/proyectos/bancas-y-paredes-2026/',
   },
 
   integrations: [
-    partytown(),
     tailwind(),
     sitemap({
       filter: (page) =>
