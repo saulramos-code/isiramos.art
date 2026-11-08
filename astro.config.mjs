@@ -46,6 +46,7 @@ export default defineConfig({
         return images.length > 0 ? { ...item, img: images } : item;
       },
     }),
+    partytown(), //
   ],
 
   markdown: {
