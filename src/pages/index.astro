@@ -1,172 +1,291 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import HeroSection from "../components/Sections/HeroSection.astro";
-import ObrasList from "../components/Sections/ObrasList.astro";
-import PublicacionesList from "../components/Sections/PublicacionesList.astro";
-import Button from "../components/UI/Button.astro";
 import OptimizedImage from "../components/UI/OptimizedImage.astro";
+import { getCollection } from "astro:content";
+
+const works = (await getCollection("obras", ({ data }) => !data.draft))
+  .sort((first, second) =>
+    second.data.year - first.data.year || first.data.title.localeCompare(second.data.title, "es")
+  )
+  .slice(0, 5);
+
+const projects = (await getCollection("proyectos", ({ data }) => !data.draft && Boolean(data.logo)))
+  .sort((first, second) =>
+    (second.data.year ?? 0) - (first.data.year ?? 0) ||
+    first.data.name.localeCompare(second.data.name, "es")
+  )
+  .slice(0, 2);
 ---
 
-<BaseLayout>
-  <HeroSection 
-    backgroundImage="/uploads/fondo-base.webp"
-  />
+<BaseLayout
+  title="Isaac Ramos | Artista Visual y Fotógrafo"
+  description="Obra, proyectos y servicios de Isaac Ramos, artista visual y fotógrafo mexicano."
+>
+  <div class="home-editorial">
+    <section class="grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-8 max-w-7xl mx-auto px-6 pt-0 pb-24 md:pb-32">
+      <div class="flex flex-col justify-end md:col-span-4 md:row-start-1">
+        <p class="mb-5 text-xs uppercase tracking-widest text-gray-500">Artista visual · Fotógrafo</p>
+        <h1 class="font-serif text-6xl font-medium leading-[0.95] text-gray-950 md:text-7xl">
+          Isaac Ramos
+        </h1>
+        <p class="mt-4 max-w-md text-lg leading-relaxed text-gray-600">
+          Artista visual y fotógrafo mexicano. Mi práctica explora el desapego y la memoria a
+          través de objetos cotidianos, fotografía y publicaciones.
+        </p>
+        <div class="mt-8 flex gap-7 text-base">
+          <a class="text-black underline decoration-gray-300 underline-offset-4 transition-all duration-300 hover:text-[#F28C2C] hover:font-semibold hover:decoration-[#F28C2C]" href="/obras/">
+            Obra
+          </a>
+          <a class="text-black underline decoration-gray-300 underline-offset-4 transition-all duration-300 hover:text-[#F28C2C] hover:font-semibold hover:decoration-[#F28C2C]" href="/sobre-mi/">
+            Sobre mí
+          </a>
+        </div>
+      </div>
 
-  <!-- Obras Destacadas-->
-  <ObrasList />
+      <div class="md:col-span-7 md:col-start-6 md:row-start-1">
+        <OptimizedImage
+          src="/uploads/fondo-base.webp"
+          alt="Detalle visual de una obra de Isaac Ramos"
+          class="aspect-[4/5] max-h-[820px] w-full object-cover md:aspect-[5/4]"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+          widths={[640, 960, 1280, 1600]}
+          sizes="(max-width: 768px) 100vw, 58vw"
+        />
+      </div>
+    </section>
 
-   <!-- About Isaac Ramos  -->
-  <section class="py-[120px] bg-gray-50">
-    <div class="container">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-        <div>
+    <section class="py-24 md:py-32" aria-labelledby="selected-work-heading">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-8 max-w-7xl mx-auto px-6">
+        <div class="col-span-1 mb-8 flex items-end justify-between border-b border-gray-200 pb-4 md:col-span-12">
+          <h2 id="selected-work-heading" class="font-serif text-4xl font-medium md:text-5xl">Obra</h2>
+        </div>
+
+        {works.map((work, index) => (
+          <a
+            href={`/obras/${work.slug}/`}
+            class:list={[
+              "block",
+              index === 0 && "md:col-span-7",
+              index === 1 && "md:col-span-4 md:col-start-9 md:mt-24",
+              index > 1 && "md:col-span-4",
+            ]}
+          >
+            <figure class="group relative overflow-hidden">
+              <OptimizedImage
+                src={work.data.image}
+                alt={`${work.data.title}, obra de Isaac Ramos`}
+                class="aspect-[4/3] w-full object-cover"
+                loading="lazy"
+                decoding="async"
+                widths={[480, 800, 1200, 1600]}
+                sizes="(max-width: 768px) 100vw, 60vw"
+              />
+              <div class="absolute inset-0 flex items-end bg-black/50 p-5 opacity-100 transition-opacity duration-300 md:opacity-0 md:group-hover:opacity-100">
+                <div>
+                  <h3 class="font-serif text-xl text-white">{work.data.title}</h3>
+                  <p class="mt-1 text-sm text-white/80">{work.data.year}</p>
+                </div>
+              </div>
+            </figure>
+          </a>
+        ))}
+
+        <a class="col-span-1 mt-10 flex justify-end text-base underline decoration-gray-300 underline-offset-4 transition hover:decoration-gray-900 md:col-span-12" href="/obras/">
+          Explorar toda la obra <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="py-24 md:py-32" aria-labelledby="about-heading">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-8 max-w-7xl mx-auto px-6 items-center">
+        <div class="md:col-span-5">
           <OptimizedImage
-            src="/uploads/isaac-ramos.webp" 
-            alt="isaac-ramos-artista-visual" 
-            class="rounded-lg shadow-lg object-cover w-full h-full"
+            src="/uploads/isaac-ramos.webp"
+            alt="Isaac Ramos fotografiando en exteriores"
+            class="aspect-[4/5] w-full rounded-md object-cover"
             loading="lazy"
             decoding="async"
+            widths={[480, 800, 1200]}
+            sizes="(max-width: 768px) 100vw, 42vw"
           />
         </div>
-        
-        <div>
-          <h2 class="text-3xl md:text-4xl font-bold mb-6">Sobre Isaac Ramos</h2>
-          <p class="text-gray-700 mb-6 text-lg">
-            Fotógrafo y artista visual. Integrante del colectivo Tropical Fanzine, donde se producen publicaciones independientes. Su práctica gira en torno al desapego y la resignificación de experiencias personales mediante la reconfiguración de objetos cotidianos.
-                    </p>
-          <p class="text-gray-700 mb-8 text-lg">
-            Ha exhibido su obra en el TYPA Letterpress and Paper Art Centre de Tartú, Estonia; Carnaval L'ours Noir Mont-Louis 2026, en colaboración con Aztrosharper; y en galerías como Galería Universitaria San Francisco de Borja, Galería Casa Habitación, Galería del Centro de Artes del NorteEs parte de la colección de la fanzinoteca del Museo Universitario del Chopo y la Libre.
+        <div class="md:col-span-6 md:col-start-7">
+          <p class="mb-5 text-xs uppercase tracking-widest text-gray-500">Práctica y trayectoria</p>
+          <h2 id="about-heading" class="font-serif text-4xl font-medium md:text-5xl">Sobre mí</h2>
+          <p class="mt-7 text-lg leading-relaxed text-gray-700">
+            Fotógrafo y artista visual, integrante de Tropical Fanzine. Trabajo con el desapego
+            y la resignificación de experiencias personales mediante objetos cotidianos,
+            fotografía y publicaciones independientes.
           </p>
-          
-          <div class="flex justify-center">
-            <Button href="/sobre-mi">
-              Ver Curriculum Vitae
-            </Button>
-          </div>
+          <a class="mt-7 inline-flex text-sm underline decoration-gray-300 underline-offset-4 transition hover:decoration-gray-900" href="/sobre-mi/">
+            Conocer trayectoria <span class="ml-2" aria-hidden="true">→</span>
+          </a>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-
-
-  <!-- Series fotográficas y proyectos artísticos  - Body Work - Cuerpo de Trabajo-->
- <section class="py-[150px] bg-white">
-  <div class="container">
-    <div class="max-w-7xl mx-auto">
-
-      <h2 class="text-3xl md:text-4xl font-bold text-center mb-20">
-        Proyectos artísticos
-      </h2>
-
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-24">
-
-        <!-- Fotografía -->
-        <article class="group">
-
-          <h3 class="text-2xl font-semibold text-center tracking-wide transition-all duration-500 group-hover:tracking-widest">
-            Fotografía contemporánea
-          </h3>
-
-          <div class="w-14 h-px bg-black mx-auto my-6 transition-all duration-500 group-hover:w-20"></div>
-
-          <p class="text-neutral-500 text-center max-w-md mx-auto mb-10 leading-relaxed">
-            Exploraciones sobre el territorio urbano, la memoria y el objeto personal
-            mediante el desapego de objetos.
-          </p>
-
-          <a
-            href="/obras/fotografia-contemporanea"
-            class="block px-6 overflow-hidden rounded-md"
-          >
-            <OptimizedImage
-              src="/uploads/fotografia-contemporanea-isaac-ramos.webp"
-              alt="Fotografía contemporánea de Isaac Ramos"
-              class="
-                w-full
-                h-[560px]
-                object-cover
-                rounded-md
-                transition-all
-                duration-700
-                ease-out
-                group-hover:scale-[1.02]
-                group-hover:shadow-xl
-                group-hover:brightness-95
-              "
-              loading="lazy"
-              decoding="async"
-              widths={[480, 800, 1200]}
-              sizes="(max-width: 768px) 100vw, 50vw"
-            />
+    <section class="py-24 md:py-32" aria-labelledby="projects-heading">
+      <div class="mx-auto max-w-7xl px-6">
+        <div class="mb-12 flex flex-wrap items-end justify-between gap-4 border-b border-gray-200 pb-5">
+          <h2 id="projects-heading" class="font-serif text-4xl font-medium md:text-5xl">Proyectos</h2>
+          <a class="text-base underline decoration-gray-300 underline-offset-4 transition hover:decoration-gray-900" href="/proyectos/">
+            Explorar proyectos <span aria-hidden="true">→</span>
           </a>
+        </div>
 
-          <div class="flex justify-center mt-10">
-            <Button
-              href="/obras/fotografia-contemporanea"
-              variant="outline"
-              class="transition-all duration-300 group-hover:px-7"
-            >
-              Explorar fotografía →
-            </Button>
-          </div>
-
-        </article>
-
-        <!-- Objetos -->
-        <article class="group">
-
-          <h3 class="text-2xl font-semibold text-center tracking-wide transition-all duration-500 group-hover:tracking-widest">
-            Piezas y objetos
-          </h3>
-
-          <div class="w-14 h-px bg-black mx-auto my-6 transition-all duration-500 group-hover:w-20"></div>
-
-          <p class="text-neutral-500 text-center max-w-md mx-auto mb-10 leading-relaxed">
-            Objetos, ensamblajes e instalaciones que exploran la relación entre
-            los materiales, el espacio y la experiencia cotidiana.
-          </p>
-
-          <a
-            href="/obras/piezas-y-objetos"
-            class="block px-6 overflow-hidden rounded-md"
-          >
-            <OptimizedImage
-              src="/uploads/piezas-y-objetos-isaac-ramos.webp"
-              alt="Piezas y objetos de Isaac Ramos"
-              class="
-                w-full
-                h-[560px]
-                object-cover
-                rounded-md
-                transition-all
-                duration-700
-                ease-out
-                group-hover:scale-[1.02]
-                group-hover:shadow-xl
-                group-hover:brightness-95
-              "
-              loading="lazy"
-              decoding="async"
-              widths={[480, 800, 1200]}
-              sizes="(max-width: 768px) 100vw, 50vw"
-            />
-          </a>
-
-          <div class="flex justify-center mt-10">
-            <Button
-              href="/obras/piezas-y-objetos"
-              variant="outline"
-              class="transition-all duration-300 group-hover:px-7"
-            >
-              Explorar piezas →
-            </Button>
-          </div>
-
-        </article>
-
+        <div class="space-y-24">
+          {projects.map((project, index) => (
+            <article class="grid grid-cols-1 items-center gap-8 md:grid-cols-12 md:gap-12">
+              {project.data.logo && (
+                <a
+                  class:list={[
+                    "group block md:col-span-7",
+                    index === 0 && "md:col-start-1 md:row-start-1",
+                    index === 1 && "md:col-start-6 md:row-start-1",
+                  ]}
+                  href={`/proyectos/${project.slug}/`}
+                  aria-label={`Ver proyecto: ${project.data.name}`}
+                >
+                  <OptimizedImage
+                    src={project.data.logo}
+                    alt={`${project.data.name}, proyecto de Isaac Ramos`}
+                    class="aspect-[4/3] w-full rounded-md object-cover transition-opacity duration-300 group-hover:opacity-80"
+                    loading="lazy"
+                    decoding="async"
+                    widths={[480, 800, 1200, 1600]}
+                    sizes="(max-width: 768px) 100vw, 58vw"
+                  />
+                </a>
+              )}
+              <div
+                class:list={[
+                  "md:col-span-5",
+                  index === 0 && "md:col-start-8 md:row-start-1",
+                  index === 1 && "md:col-start-1 md:row-start-1",
+                ]}
+              >
+                <div class="flex flex-wrap items-baseline justify-between gap-3">
+                  <h3 class="font-serif text-2xl font-medium">{project.data.name}</h3>
+                  {project.data.year && (
+                    <span class="shrink-0 text-xs uppercase tracking-widest text-gray-500">
+                      {project.data.year}
+                    </span>
+                  )}
+                </div>
+                <p class="mt-3 text-base leading-relaxed text-gray-600">
+                  {project.data.summary}
+                </p>
+                <a
+                  class="mt-5 inline-flex text-base underline decoration-gray-300 underline-offset-4 transition hover:text-[#B85B12] hover:decoration-[#B85B12]"
+                  href={`/proyectos/${project.slug}/`}
+                >
+                  Ver proyecto <span class="ml-2" aria-hidden="true">→</span>
+                </a>
+              </div>
+            </article>
+          ))}
+        </div>
       </div>
+    </section>
 
-    </div>
+    <section class="py-24 md:py-32" aria-labelledby="services-heading">
+      <div class="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-6 md:grid-cols-12">
+        <div class="md:col-span-5">
+          <OptimizedImage
+            src="/uploads/obras/stills/cheetos-stills/cheetos-still-01.webp"
+            alt="Fotograma de la obra audiovisual Cheetos"
+            class="aspect-[4/5] w-full rounded-md object-cover"
+            loading="lazy"
+            decoding="async"
+            widths={[480, 800, 1200]}
+            sizes="(max-width: 768px) 100vw, 42vw"
+          />
+        </div>
+        <div class="md:col-span-7">
+          <h2 id="services-heading" class="font-serif text-4xl font-medium md:text-5xl">
+            Servicios de Producción Visual
+          </h2>
+          <div class="mt-6 flex flex-col gap-2">
+            <h3 class="font-serif text-2xl leading-snug">
+              Una mirada editorial aplicada a la imagen comercial, la belleza y el producto.
+            </h3>
+            <p class="max-w-2xl text-base leading-relaxed text-gray-600">
+              Además de mi práctica artística, aplico mi mirada editorial a proyectos comerciales.
+              Ofrezco edición de video, fotografía de producto y retoque fotográfico para marcas y
+              creadores.
+            </p>
+          </div>
+          <div class="mt-8">
+            <article class="mb-5 border-b border-neutral-200 pb-5">
+              <h3 class="font-serif text-xl">Edición de video</h3>
+              <p class="mt-2 text-base text-gray-600">
+                Edición y postproducción para profesionales de la belleza.
+              </p>
+              <a class="mt-3 inline-flex text-base transition-colors hover:text-[#B85B12]" href="/servicios/edicion-video/">
+                Ver servicio <span class="ml-2" aria-hidden="true">→</span>
+              </a>
+            </article>
+            <article class="mb-5 border-b border-neutral-200 pb-5">
+              <h3 class="font-serif text-xl">Fotografía de producto</h3>
+              <p class="mt-2 text-base text-gray-600">
+                Fotografía editorial para marcas de skincare, salud y bienestar.
+              </p>
+              <a class="mt-3 inline-flex text-base transition-colors hover:text-[#B85B12]" href="/servicios/fotografia-producto/">
+                Ver servicio <span class="ml-2" aria-hidden="true">→</span>
+              </a>
+            </article>
+            <article class="mb-5 border-b border-neutral-200 pb-5">
+              <h3 class="font-serif text-xl">Retoque fotográfico</h3>
+              <p class="mt-2 text-base text-gray-600">
+                Postproducción de alta gama para fotógrafos que delegan su edición.
+              </p>
+              <a class="mt-3 inline-flex text-base transition-colors hover:text-[#B85B12]" href="/servicios/retoque-fotografico/">
+                Ver servicio <span class="ml-2" aria-hidden="true">→</span>
+              </a>
+            </article>
+          </div>
+          <a class="mt-7 inline-flex text-base underline decoration-gray-300 underline-offset-4 transition hover:decoration-gray-900" href="/servicios/">
+            Conocer servicios <span class="ml-2" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-[#EEECE6] px-6 py-24 md:py-32" aria-labelledby="closing-heading">
+      <div class="mx-auto max-w-4xl">
+        <p class="text-xs uppercase tracking-[0.2em] text-neutral-500">
+          Isaac Ramos · Práctica artística
+        </p>
+        <h2 id="closing-heading" class="mt-6 max-w-3xl font-serif text-4xl font-medium leading-tight md:text-6xl">
+          Explorando el desapego y la memoria.
+        </h2>
+        <p class="mt-6 max-w-2xl text-lg leading-relaxed text-neutral-700">
+          Fotografía, arte objeto y publicaciones independientes que investigan nuestras
+          relaciones afectivas con los objetos cotidianos.
+        </p>
+        <div class="mt-10 flex flex-wrap gap-8 border-t border-neutral-300 pt-7">
+          <a class="text-base underline underline-offset-4 transition-colors hover:text-[#B85B12]" href="/obra-disponible/">
+            Ver obra disponible <span aria-hidden="true">→</span>
+          </a>
+          <a class="text-base underline underline-offset-4 transition-colors hover:text-[#B85B12]" href="/contacto?tipo=artista">
+            Contacto para adquisiciones o proyectos <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
   </div>
-</section>
+
+  <style>
+    .home-editorial {
+      font-family: "Source Sans Pro", sans-serif;
+      font-weight: 400;
+    }
+
+    .home-editorial :is(h1, h2, h3) {
+      font-family: "Fraunces", serif;
+      font-weight: 500;
+    }
+  </style>
+</BaseLayout>

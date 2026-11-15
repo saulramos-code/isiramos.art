@@ -4,20 +4,25 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 <BaseLayout
   title="Contacto | Isaac Ramos"
-  description="Contacto con Isaac Ramos. Información para adquisiciones de obras, servicios fotográficos y colaboraciones artísticas."
+  description="Para consultas sobre obra disponible, exposiciones o proyectos artísticos."
 >
 
   <section class="py-[96px] md:py-[120px]">
     <div class="container mx-auto max-w-4xl">
       <div class="space-y-12 md:space-y-16">
         <header class="space-y-6 md:space-y-8">
-          <h1 class="text-4xl font-bold tracking-[-0.04em] text-black md:text-6xl">
+          <h1
+            id="contact-title"
+            class="text-4xl font-bold tracking-[-0.04em] text-black md:text-6xl"
+          >
             Contacto
           </h1>
 
-          <p class="max-w-2xl text-lg leading-relaxed text-gray-600 md:text-xl">
-            Para adquirir una obra, contratar servicios fotográficos,
-            organizar exposiciones o colaborar en proyectos.
+          <p
+            id="contact-description"
+            class="max-w-2xl text-lg leading-relaxed text-gray-600 md:text-xl"
+          >
+            Para consultas sobre obra disponible, exposiciones o proyectos artísticos.
           </p>
 
           <div class="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center">
@@ -156,8 +161,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
               <input
                 type="hidden"
+                id="contact-email-subject"
                 name="_subject"
-                value="Consulta desde la web de Isaac Ramos"
+                value="Consulta de Arte"
               />
 
               <input
@@ -180,5 +186,28 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       </div>
     </div>
   </section>
+
+  <script>
+    const isServiceContact = new URLSearchParams(window.location.search).get("tipo") === "servicio";
+    const contactTitle = document.getElementById("contact-title");
+    const contactDescription = document.getElementById("contact-description");
+    const emailSubject = document.getElementById("contact-email-subject") as HTMLInputElement | null;
+
+    if (contactTitle) {
+      contactTitle.textContent = isServiceContact
+        ? "Contacto para Servicios Profesionales"
+        : "Contacto";
+    }
+
+    if (contactDescription) {
+      contactDescription.textContent = isServiceContact
+        ? "Cuéntame sobre tu marca o proyecto. Estoy listo para elevar la calidad visual de tu contenido."
+        : "Para consultas sobre obra disponible, exposiciones o proyectos artísticos.";
+    }
+
+    if (emailSubject) {
+      emailSubject.value = isServiceContact ? "Consulta de Servicio" : "Consulta de Arte";
+    }
+  </script>
 
 </BaseLayout>
